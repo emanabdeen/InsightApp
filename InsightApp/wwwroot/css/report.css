@@ -1,0 +1,86 @@
+﻿.reportContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.tableContainer {
+    display: flex; 
+    flex-direction: column; 
+    border: solid;
+    border-color: rgb(0, 50, 110);
+    border-radius: 15px;
+    border-width: 5px;
+    padding: 20px;
+}
+.reportMetadataout {
+    justify-self:start;
+    align-self:start;
+    margin-top:20px;
+    
+}
+
+.reportMetadata {
+    border: solid;
+    border-color: rgb(0, 50, 110);
+    border-radius: 15px;
+    border-width: 5px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+.downLoadReportButton {
+    color: rgb(0, 50, 110);
+    border: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    border: solid;
+    border-color: rgb(0, 50, 110);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 200px;
+    height: 50px;
+    justify-self: end;
+}
+
+    .downLoadReportButton:hover {
+        transform: translateY(2px); /* Slight lift effect on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.filter-label {
+    font-weight: bold;
+    padding-top: 8px;
+    margin-right: 10px;
+}
+
+.filter-dropdown {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 220px;
+    margin-right: 20px;
+}
+
+.filterParameters {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width:50%;
+}
+
+.filterParameter {
+    background-color: lightgray;
+    padding:5px 10px 5px 10px;
+}

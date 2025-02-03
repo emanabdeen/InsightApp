@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InsightApp - Backup.Tests", "InsightApp - Backup.Tests.csproj", "{E8A00FD0-FEAF-4230-A5D7-DA79DCE4B51B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InsightApp.Tests", "InsightApp.Tests.csproj", "{0802DD11-97C7-443B-A8C6-A128E61C44EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E8A00FD0-FEAF-4230-A5D7-DA79DCE4B51B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8A00FD0-FEAF-4230-A5D7-DA79DCE4B51B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8A00FD0-FEAF-4230-A5D7-DA79DCE4B51B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8A00FD0-FEAF-4230-A5D7-DA79DCE4B51B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0802DD11-97C7-443B-A8C6-A128E61C44EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0802DD11-97C7-443B-A8C6-A128E61C44EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0802DD11-97C7-443B-A8C6-A128E61C44EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0802DD11-97C7-443B-A8C6-A128E61C44EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8DE63A9F-D102-46B1-A467-32FA0AC24951}
+	EndGlobalSection
+EndGlobal

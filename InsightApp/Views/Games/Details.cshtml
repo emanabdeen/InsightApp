@@ -1,0 +1,218 @@
+﻿@model ProductDetailsViewModel
+@{
+
+    var languageColours = new Dictionary<string, string>
+{
+    { "English", "#D3D3D3" },
+    { "French", "#E6AEE6" },
+    { "Spanish", "#FFE4B5" },
+    { "German", "#D2B48C" },
+    { "Italian", "#F4A460" },
+    { "Japanese", "#B0C4DE" },
+    { "Korean", "#87CEFA" },
+    { "Portuguese", "#FFD700" },
+    { "Russian", "#BC8F8F" },
+    { "Arabic", "#EABF12" }
+};
+
+    var categoryColours = new Dictionary<string, string>
+{
+    { "Board", "#FFE4B5" },
+    { "Adventure", "#FFA07A" },
+    { "Fighting", "#CD5C5C" },
+    { "Survival", "#FFCC99" },
+    { "Racing", "#FFDAB9" },
+    { "Horror", "#8B0000" },
+    { "Platformer", "#D8BFD8" },
+    { "Sports", "#98FB98" },
+    { "Puzzle", "#E6E6FA" },
+    { "Trivia", "#AFEEEE" }
+};
+
+
+    var platformColours = new Dictionary<string, string>
+{
+    { "Nintendo Switch", "#FF6347" },
+    { "PC", "#B0E0E6" },
+    { "PS2", "#6A5ACD" },
+    { "PS3", "#4682B4" },
+    { "PS4", "#4682B4" },
+    { "PS5", "#1E90FF" },
+    { "Wii U", "#AFEEEE" },
+    { "Xbox 360", "#9ACD32" },
+    { "Xbox One", "#32CD32" },
+    { "Xbox Series X", "#289B08" }
+};
+
+}
+
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Star Rating System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="~/css/rating.css" /> <!-- Link to your custom CSS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery CDN -->
+    <style>
+        .disabled-link {
+            pointer-events: none;
+            color: gray;
+            background-color: #ddd;
+            cursor: default;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+
+<div class="d-inline-flex p-2 bd-highlight flex-column justify-content-start">
+    <h7 class="myHeader">Conestoga Virtual Game Store - Admin Panel</h7>
+
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Games" asp-action="List">Games</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.ActiveGame.GameName</li>
+        </ol>
+    </nav>
+</div>
+<body>
+    <div class="container">
+        <div class="gameHeader">
+            <!-- Game Image -->
+            <img src="@Url.Content(@Model.ActiveGame.GameImageLink)" alt="Game Cover Image" class="game-image">
+
+            <!-- Game Information -->
+            <div class="col-md-6 gameDetails">
+                <div>
+                    <div class="game-title"><span id="game-title">@Model.ActiveGame.GameName</span></div>
+                    <div class="game-description">
+                        <p id="game-description">@Model.ActiveGame.Details</p>
+                    </div>
+                    <!-- Game Rating -->
+                    <div id="rating-container">
+                        <div class="ratingProductDetails">
+                            Rating: <span style="color:gold; font-size:18px;" id="game-rating">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= (int)Model.AverageRating)
+                                    {
+                                        <i class="bi bi-star-fill star-full"></i> <!-- Full star with color -->
+                                    }
+                                    else if (i == Math.Ceiling(Model.AverageRating) && Model.AverageRating % 1 != 0)
+                                    {
+                                        <i class="bi bi-star-half star-half"></i> <!-- Half star with color -->
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-star star-empty"></i> <!-- Empty star with color -->
+                                    }
+                                }
+                            </span> (@Model.AverageRating / 5)
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Modal Structure -->
+                <div id="rateModal" class="modal hidden">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3 class="modal-header">YOUR RATING</h3>
+                        <p class="modal-title">@Model.ActiveGame.GameName</p>
+                        <div id="stars-container" class="stars-container">
+                            <!-- 5 Font Awesome stars for rating selection -->
+                            <i class="rating-star fa-regular fa-star" data-value="1"></i>
+                            <i class="rating-star fa-regular fa-star" data-value="2"></i>
+                            <i class="rating-star fa-regular fa-star" data-value="3"></i>
+                            <i class="rating-star fa-regular fa-star" data-value="4"></i>
+                            <i class="rating-star fa-regular fa-star" data-value="5"></i>
+                        </div>
+                        <button id="save-button" class="rate-button btn btn-primary" disabled>Rate</button>
+                    </div>
+                </div>
+
+                <div class="ratingProductDetails">
+                    <p>Price: $ @Model.ActiveGame.Price</p>
+                </div>
+                
+                <div class="gameSpecifications">
+                    <ul style="list-style: none; padding: 0;">
+                        <li>
+                            <span class="game-details-title">Category:</span>
+                            <span>
+                                @foreach (var g in Model.ActiveGame.GameDetailsCategories)
+                                {
+                                    var color = categoryColours.ContainsKey(g.Category.CategoryName) ? categoryColours[g.Category.CategoryName] : "#D3D3D3"; // Default color if not found
+                                    <span class="badge" style="background-color:@color; color: black;">
+                                        - @g.Category.CategoryName
+                                    </span>
+                                }
+                            </span>
+                        </li>
+                        <li>
+                            <span class="game-details-title">
+                                Platform:
+                            </span>
+                            <span>
+                                @foreach (var g in Model.ActiveGame.GameDetailsPlatforms)
+                                {
+                                    var color = platformColours.ContainsKey(g.Platform.PlatformName) ? platformColours[g.Platform.PlatformName] : "#D3D3D3"; // Default color if not found
+                                    <span class="badge" style="background-color:@color; color: black;">
+                                        - @g.Platform.PlatformName
+                                    </span>
+                                }
+                            </span>
+                        </li>
+                        <li>
+                            <span class="game-details-title">
+                                Language:
+                            </span>
+                            <span>
+                                @foreach (var g in Model.ActiveGame.GameDetailsLanguages)
+                                {
+                                    var color = languageColours.ContainsKey(g.Language.LanguageName) ? languageColours[g.Language.LanguageName] : "#D3D3D3"; // Default color if not found
+                                    <span class="badge" style="background-color:@color; color: black;">
+                                        - @g.Language.LanguageName
+                                    </span>
+                                }
+                            </span>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+
+       @*  <-- Empty Placeholder Images -->
+        <div class="recommendedGames">
+            <div class="col-12">
+                <h4>Recommended games</h4>
+            </div>
+            <div>
+                <div class="scroll-container">
+                    <img src="~/Imgs/Games/Minecraft.jpg" alt="Image 1">
+
+                    <!----==========  DELETE THIS PART AFTER RETRIVING THE RECOMENDED ITEMS .... its just demo============---->
+                    <img src="~/Imgs/Games/Sonic Mania.jpg" alt="Image 2">
+                    <img src="~/Imgs/Games/Monopoly.jpg" alt="Image 3">
+                    <img src="~/Imgs/Games/Minecraft.jpg" alt="Image 4">
+                    <img src="~/Imgs/Games/Minecraft.jpg" alt="Image 1">
+                    <img src="~/Imgs/Games/Sonic Mania.jpg" alt="Image 2">
+                    <img src="~/Imgs/Games/Monopoly.jpg" alt="Image 3">
+                    <img src="~/Imgs/Games/Minecraft.jpg" alt="Image 4">
+                    <!----==========  DELETE THIS PART AFTER RETRIVING THE RECOMENDED ITEMS .... its just demo============---->
+
+                </div>
+            </div>
+
+        </div> *@
+    </div>
+
+
+
+</body>

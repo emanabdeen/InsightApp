@@ -1,0 +1,200 @@
+﻿@model EventDetailViewModel
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // Check if the current date is past the event's end date
+        if ("@Model.PastEvent" === "true") {
+            // Disable the register button and optionally show a message
+            document.getElementById("registerButton").style.opacity = 0.5;
+            document.getElementById("registerButton").style.pointerEvents = "none";
+            document.getElementById("pastEventMessage").style.display = "block"; // Show the past event message
+        }
+        else{
+            document.getElementById("pastEventMessage").style.display = "none"; // hide the past event message
+        }
+
+        if ("@ViewBag.MyEvent" === "true") {
+            // Disable the register button and optionally show a message
+            document.getElementById("registerButton").style.display = "none"; 
+        }
+    });
+
+</script>
+
+
+
+<!------Breadcrumb------>
+<nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+        @if (ViewBag.MyEvent == "true")
+        {
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="GetMyEvents">My Events</a></li>
+        }
+        else
+        {
+            <li class="breadcrumb-item"><a asp-controller="PortalEvents" asp-action="GetEvents">Events</a></li>
+        }
+        
+        <li class="breadcrumb-item active" aria-current="page">@Model.ActiveEvent.EventName</li>
+    </ol>
+</nav>
+
+
+<div class="pageBody">
+    <div class="formEventFrame">
+        <div class="col-lg-8 leftSideDetails">
+            <!-------EventName----------->
+            <div class="form-group row" style="margin-bottom:25px;">
+                <div class="col-sm-2"><label class="lablesForm">Event Title:</label></div>
+                <div class="col-sm-10 detailsPage">
+                    <p class="detailsPage">@Model.ActiveEvent.EventName</p>
+                </div>
+            </div>
+            <!-------Details----------->
+            <div class="form-group row" style="margin-bottom:25px;">
+                <div class="col-sm-2"><label class="lablesForm">Event Details:</label></div>
+                <div class="col-sm-10 detailsPage">
+                    <p class="detailsPage">@Model.ActiveEvent.Details</p>
+                </div>
+            </div>
+            @* <!-------StartDate----------->
+            <div class="form-group row" style="margin-bottom:25px;">
+                <div class="col-sm-2"><label class="lablesForm">Start Date:</label></div>
+                <div class="col-sm-10 detailsPage">
+                    <p class="detailsPage">@Model.ActiveEvent.StartDate</p>
+                </div>
+            </div> *@
+
+            <!-------EndDate----------->
+            <div class="form-group row" style="margin-bottom:25px;">
+                <div class="col-sm-2"><label class="lablesForm ">End Date:</label></div>
+                <div class="col-sm-10 detailsPage">
+                    <p class="detailsPage">@Model.ActiveEvent.EndDate</p>
+                </div>
+            </div>
+
+            <!-------StartTime----------->
+            <div class="form-group row" style="margin-bottom:25px;">
+                <div class="col-sm-2"><label class="lablesForm ">Start Time:</label></div>
+                <div class="col-sm-10 detailsPage">
+                    <p class="detailsPage">@Model.ActiveEvent.StartTime</p>
+                </div>
+            </div>
+
+            <!-------EndTime----------->
+            <div class="form-group row" style="margin-bottom:25px;">
+                <div class="col-sm-2"><label class="lablesForm ">Duration (hrs):</label></div>
+                <div class="col-sm-10 detailsPage">
+                    <p class="detailsPage">@Model.ActiveEvent.Duration</p>
+                </div>
+            </div>
+
+            <!-------Event Type----------->
+            <div class="form-group row" style="margin-bottom:25px;">
+                <div class="col-sm-2"><label class="lablesForm ">Event Type:</label></div>
+                <div class="col-sm-10 detailsPage">
+                    <p class="detailsPage">@Model.ActiveEvent.EvType.EvTypeName</p>
+                </div>
+            </div>
+
+            <!------Address / Link ------->
+            @if (@Model.ActiveEvent.EvType.EvTypeName == "Virtual")
+            {
+                <div class="form-group row" style="margin-bottom:25px;">
+                    <div class="col-sm-2"><label class="lablesForm ">Event Link:</label></div>
+                    <div class="col-sm-10 detailsPage">
+                        <p class="detailsPage">@Model.ActiveEvent.EventLink</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group row" style="margin-bottom:25px;">
+                    <div class="col-sm-2"><label class="lablesForm ">Event Address:</label></div>
+                    <div class="col-sm-10 ">
+                        <!------form-group------->
+                        <div class="form-group row" style="margin-bottom:15px;">
+                            <div class="col-sm-4"><label class="lablesForm ">Street Number:</label></div>
+                            <div class="col-sm-8 detailsPage">
+                                <p class="detailsPage">@Model.ActiveEvent.Address.StreetNumber</p>
+                            </div>
+                        </div>
+                        <!------form-group------->
+                        <div class="form-group row" style="margin-bottom:15px;">
+                            <div class="col-sm-4"><label class="lablesForm ">Street Name:</label></div>
+                            <div class="col-sm-8 detailsPage">
+                                <p class="detailsPage">@Model.ActiveEvent.Address.StreetName</p>
+                            </div>
+                        </div>
+
+                        <!------form-group------->
+                        <div class="form-group row" style="margin-bottom:15px;">
+                            <div class="col-sm-4"><label class="lablesForm ">City:</label></div>
+                            <div class="col-sm-8 detailsPage">
+                                <p class="detailsPage">@Model.ActiveEvent.Address.City</p>
+                            </div>
+                        </div>
+
+                        <!------form-group------->
+                        <div class="form-group row" style="margin-bottom:15px;">
+                            <div class="col-sm-4"><label class="lablesForm ">Province:</label></div>
+                            <div class="col-sm-8 detailsPage">
+                                <p class="detailsPage">@Model.ActiveEvent.Address.Province</p>
+                            </div>
+                        </div>
+
+                        <!------form-group------->
+                        <div class="form-group row" style="margin-bottom:15px;">
+                            <div class="col-sm-4"><label class="lablesForm ">Country:</label></div>
+                            <div class="col-sm-8 detailsPage">
+                                <p class="detailsPage">@Model.ActiveEvent.Address.Country</p>
+                            </div>
+                        </div>
+
+                        <!------form-group------->
+                        <div class="form-group row" style="margin-bottom:15px;">
+                            <div class="col-sm-4"><label class="lablesForm ">Postal Code:</label></div>
+                            <div class="col-sm-8 detailsPage">
+                                <p class="detailsPage">@Model.ActiveEvent.Address.PostalCode</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            }
+
+            @* <!-------Member registration----------->
+            <div class="form-group row" style="margin-bottom:7px;">
+                <div class="col-sm-2"><label class="lablesForm">No. Registrations:</label></div>
+                <div class="col-sm-2 detailsPage">
+                    <p class="detailsPage">@Model.Registrations.ToString()</p>
+                </div>
+                <div class="col-sm-2"><p style="margin-bottom:0px;"><i>Member(s)</i></p></div>
+            </div> *@
+        </div>
+        <div class="col-lg-4 rightSideDetails">
+            <h2 class="myHeader" style="text-align:center;">@Model.ActiveEvent.EventName</h2>
+            <div class="container-2 col-8 ">
+                <p>@Model.ActiveEvent.StartDate.ToString("MMMM").ToUpper()</p>
+                <p style="font-size:50px;">@Model.ActiveEvent.StartDate.ToString("dd").ToUpper()</p>
+                <p>@Model.ActiveEvent.StartDate.ToString("yyyy").ToUpper()</p>
+            </div>
+
+            <form asp-controller="PortalEvents" asp-action="RegisterToEvent" asp-route-id="@Model.ActiveEvent.EventId" method="post">
+                <button id="registerButton" type="submit" class="btnRegister" style=" width: 100%;">
+                    Register Now
+                </button>
+            </form>
+            <p id="pastEventMessage" style="background-color:cornsilk; margin-top:20px; padding:10px;">This event in the past</p>
+        </div>
+    </div>
+    
+</div>
+
+
+
+
+
+

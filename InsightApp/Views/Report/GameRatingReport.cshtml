@@ -1,0 +1,157 @@
+﻿@using InsightApp.Entities
+@model ReportsGenerationViewModel
+
+<!------Breadcrumb------>
+<nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Report" asp-action="GetGenerateReports">Reports</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Game Rating Report</li>
+    </ol>
+</nav>
+
+<div style="margin-top:20px; margin-bottom:30px;">
+    <button id="downloadBtn" type="button" class="downLoadReportButton" onclick="downloadPDF()">Download as PDF <i class="bi bi-download"></i></button>
+</div>
+
+<div class="reportContainer">
+
+    <div>
+        <div class="d-inline-flex flex-row align-items-center">
+            <img src="~/Imgs/TeamLogo.png" alt="description of your image" class="header">
+            <h6 style="text-align:center;">Conestoga Virtual Game Store</h6>
+        </div>
+
+        <hr />
+        <h2 style="color:rgb(0, 50, 110);text-align:center; margin-top:30px;">Game Rating Report</h2>
+    </div>
+    <div class="reportMetadataout col-5">
+        <div class="reportMetadata">
+            <p><strong> Date:</strong> @Model.DateTimeStamp.ToString("dd/MM/yyyy")</p>
+            <hr>
+            <p><strong> Time:</strong> @Model.DateTimeStamp.ToString("hh:mm tt")</p>
+            <hr>
+            <p><strong> Published By:</strong> @Model.userName</p>
+
+        </div>
+    </div>
+    <div class="tableContainer">
+        @if (Model.GameRatingReport == null || !Model.GameRatingReport.Any())
+        {
+            <!-- Show message when cart is empty -->
+            <div class="empty-cart row">
+
+                <div>
+                    <img src="~/Imgs/empty.jpg" alt="No items">
+                </div>
+                <hr />
+                <h5>Report is not available</h5>
+                <div style="align-self:center; margin-top:30px; margin-bottom:30px;">
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="filterParameters">
+                <div class="filterParameter col-4">
+                    Category: @Model.Category
+                </div>
+                <div class="filterParameter col-4">
+                    Platform: @Model.Platform
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped itemsPage">
+                <thead>
+                    <tr>
+                        
+                        <th class="tableHheader" style="background-color:rgb(0, 50, 110); font-size: 15px;width:200px">Game Name</th>
+                        <th class="tableHheader" style="background-color:rgb(0, 50, 110); font-size: 15px;width:200px">Categories</th>
+                        <th class="tableHheader" style="background-color:rgb(0, 50, 110); font-size: 15px;width:300px">Platforms</th>
+                        <th class="tableHheader" style="background-color:rgb(0, 50, 110); font-size: 15px;width:100px">Average Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.GameRatingReport)
+                    {
+                        <tr style="border-bottom:solid; border-bottom-color:lightgray;">
+                            
+                            <td style="align-content:center;"> @item.GameName</td>
+                            <td class="itemsPage"> @item.Categories</td>
+                            <td class="itemsPage"> @item.Platforms</td>
+                            <td class="itemsPage"> @item.AverageRating.ToString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+    </div>
+</div>
+
+
+    <script>
+    window.jsPDF = window.jspdf.jsPDF;
+    var docPDF = new jsPDF();
+
+    function downloadPDF() {
+
+        console.log("clicked.");
+
+        var reportContent = document.querySelector('.reportContainer');
+        html2canvas(reportContent, {
+            scale: 4,  // Increase the scale for higher resolution
+            useCORS: true,  // Allow cross-origin resource sharing for images
+            logging: true,  // Enable logging to debug
+            width: reportContent.scrollWidth,  // Set the width of the canvas
+            height: reportContent.scrollHeight,  // Set the height of the canvas
+            x: 0,  // Adjust the x-position of the content
+            y: -window.scrollY,  // Adjust the y-position to capture everything
+        }).then(function (canvas) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');  // A4 size PDF
+
+            // Calculate aspect ratio if necessary
+            const imgWidth = 190;  // Adjust to fit A4 with some margins
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            // Get the image data from the canvas
+            const imgData = canvas.toDataURL("image/png");
+
+            // Add the image to the PDF with consistent dimensions
+            doc.addImage(imgData, "PNG", 10, 5, imgWidth, imgHeight);
+
+            // Save the PDF
+            doc.save("Game Rating Report.pdf");
+        }).catch(function (error) {
+            console.error("Error generating PDF:", error);
+        });
+
+
+        // Create a new div element to show message
+        var messageDiv = document.createElement('div');
+        messageDiv.textContent = "The report will be downloaded in a few sconds";
+        messageDiv.style.position = 'fixed'
+        messageDiv.style.top = '20px'; // Distance from the top of the page
+        messageDiv.style.left = '50%'; // Center horizontally relative to the page
+        messageDiv.style.transform = 'translateX(-50%)'; // Adjust to truly center the div
+        messageDiv.style.padding = '10px';
+        messageDiv.style.backgroundColor = '#4caf50'; // Green background
+        messageDiv.style.color = 'white';
+        messageDiv.style.borderRadius = '5px';
+        messageDiv.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+
+        // Append to body
+        document.body.appendChild(messageDiv);
+
+        // Remove the message after 5 seconds
+        setTimeout(function () {
+            document.body.removeChild(messageDiv);
+        }, 5000);
+    }
+</script>
+
+
+
+
+

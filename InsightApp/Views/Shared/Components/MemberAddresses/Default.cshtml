@@ -1,0 +1,296 @@
+﻿@model MemberAddressesViewModel
+
+@section scripts {
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<style>
+	.error {
+		color: red;
+	}
+
+	.valid {
+		color: green;
+	}
+</style>
+
+<div class="card-body">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<form id="addressForm" asp-controller="Member" asp-action="AddAddressesById" method="post" enctype="application/x-www-form-urlencoded">
+
+		<!----Member Address-------->
+		<div>
+			<!-- Form Row-->
+			<div class="row gx-3 mb-3">
+				<!-- Form Group (Unit)-->
+				<div class="col-md-6">
+					<label class="small mb-1" for="unit">Unit</label>
+					<input class="form-control" id="unit" type="text" asp-for="MemberAddress.Unit" data-val="false">
+					@* <span asp-validation-for="MemberAddress.Unit" class="text-danger"></span> *@
+				</div>
+				<!-- Form Group (Street No)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" for="streetNo">Street Number</label>
+					<input class="form-control" id="streetNo" type="text" asp-for="MemberAddress.StreetNumber">
+					<span asp-validation-for="MemberAddress.StreetNumber" class="text-danger"></span>
+				</div>
+			</div>
+
+			<!-- Form Row-->
+			<div class="row gx-3 mb-3">
+				<!-- Form Group (Street Number)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" for="streetName">Street Name</label>
+					<input class="form-control" id="streetName" type="text" asp-for="MemberAddress.StreetName">
+					<span asp-validation-for="MemberAddress.StreetName" class="text-danger"></span>
+				</div>
+				<!-- Form Group (Postal Code)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" for="city">City</label>
+					<input class="form-control" id="city" type="text" asp-for="MemberAddress.City">
+					<span asp-validation-for="MemberAddress.City" class="text-danger"></span>
+				</div>
+			</div>
+
+
+			<!-- Form Row-->
+			<div class="row gx-3 mb-3">
+				<!-- Form Group (Postal Code)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" for="postalCode">Postal Code</label>
+					<input class="form-control" id="postalCode" type="text" asp-for="MemberAddress.PostalCode">
+					@* <span asp-validation-for="MemberAddress.PostalCode" class="text-danger"></span> *@
+					<span id="postalCodeError" class="error"></span>
+				</div>
+			</div>
+
+			<!-- Form Row-->
+			<div class="row gx-3 mb-3">
+				<!-- Form Group (Province)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" >Province</label>
+					<select class="form-control" id="MemberAddress_Province" asp-for="MemberAddress.Province">
+						<option value="">Select...</option>
+						@foreach (Province province in Model.Provinces)
+						{
+							<option value="@province.ProvinceName">@province.ProvinceName</option>
+						}
+					</select>
+					<span asp-validation-for="MemberAddress.Province" class="text-danger"></span>
+				</div>
+				<!-- Form Group (Country)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" >Country</label>
+					<select class="form-control" id="MemberAddress_Country" asp-for="MemberAddress.Country">
+						<option value="">Select...</option>
+						@foreach (Country country in Model.Countries)
+						{
+							<option value="@country.CountryName">@country.CountryName</option>
+						}
+					</select>
+					<span asp-validation-for="MemberAddress.Country" class="text-danger"></span>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Checkbox Row-->
+		<div class="row gx-3 mb-3" style="margin-top:30px; font-weight:bold;">
+			<!-- Form Group (Shipping Address)-->
+			<div class="col-md-6">
+				@if (Model.IsAdressesSame == true)
+				{
+					<input type="checkbox" id="sameShippingAddress" asp-for="IsAdressesSame" checked>
+				}
+				else
+				{
+					<input type="checkbox" id="sameShippingAddress" asp-for="IsAdressesSame">
+				}
+				<label for="sameShippingAddress"> Shipping Address is the same</label><br>
+			</div>
+		</div>
+
+
+		<!----shipping Address-------->
+		<div id="shippingAddressDiv">
+			<hr style=" margin-top:30px; margin-bottom:20px;">
+			<!-- Title-->
+			<div class="row gx-3 mb-3">
+				<p style="font-weight:bolder; text-decoration:underline; margin-bottom:3px;">Shipping Address:</p>
+			</div>
+			<!-- Form Row-->
+			<div class="row gx-3 mb-3">
+				<!-- Form Group (Unit)-->
+				<div class="col-md-6">
+					<label class="small mb-1" for="unitShipping">Unit</label>
+					<input class="form-control" id="unitShipping" type="text" asp-for="ShippingAddress.Unit" data-val="false">
+					@* <span asp-validation-for="ShippingAddress.Unit" class="text-danger"></span> *@
+				</div>
+				<!-- Form Group (Street No)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" for="streetNoShipping">Street Number</label>
+					<input class="form-control" id="streetNoShipping" type="text" asp-for="ShippingAddress.StreetNumber">
+					<span asp-validation-for="ShippingAddress.StreetNumber" class="text-danger"></span>
+				</div>
+			</div>
+			<!-- Form Row-->
+			<div class="row gx-3 mb-3">
+				<!-- Form Group (Street Name)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" for="streetNameShipping">Street Name</label>
+					<input class="form-control" id="streetNameShipping" type="text" asp-for="ShippingAddress.StreetName">
+					<span asp-validation-for="ShippingAddress.StreetName" class="text-danger"></span>
+				</div>
+				<!-- Form Group (City)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" for="cityShipping">City</label>
+					<input class="form-control" id="cityShipping" type="text" asp-for="ShippingAddress.City">
+					<span asp-validation-for="ShippingAddress.City" class="text-danger"></span>
+				</div>
+			</div>
+
+			<!-- Form Row-->
+			<div class="row gx-3 mb-3">
+				<!-- Form Group (Postal Code)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label" for="postalCodeShipping">Postal Code</label>
+					<input class="form-control" id="postalCodeShipping" type="text" asp-for="ShippingAddress.PostalCode">
+					@* <span asp-validation-for="ShippingAddress.PostalCode" class="text-danger"></span> *@
+					<span id="postalCodeShippingError" class="error"></span>
+				</div>
+			</div>
+			<!-- Form Row-->
+			<div class="row gx-3 mb-3">
+				<!-- Form Group (Province)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label">Province</label>
+					<select class="form-control" id="shippingAddress_Province" asp-for="ShippingAddress.Province">
+						<option value="">Select...</option>
+						@foreach (Province province in Model.Provinces)
+						{
+							<option value="@province.ProvinceName">@province.ProvinceName</option>
+						}
+					</select>
+					<span asp-validation-for="ShippingAddress.Province" class="text-danger"></span>
+				</div>
+				<!-- Form Group (Country)-->
+				<div class="col-md-6">
+					<label class="small mb-1 required-label">Country</label>
+					<select class="form-control" id="shippingAddress_Country" asp-for="ShippingAddress.Country">
+						<option value="">Select...</option>
+						@foreach (Country country in Model.Countries)
+						{
+							<option value="@country.CountryName">@country.CountryName</option>
+						}
+					</select>
+					<span asp-validation-for="ShippingAddress.Country" class="text-danger"></span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Form Row DelivaryInstructions-->
+		<div class="row gx-3 mb-3">
+			<!-- Form Group (Province)-->
+			<div class="col-md-6">
+				<label class="small mb-1" for="provinceShipping">Delivery Instructions</label>
+				<textarea maxlength="500" class="form-control" asp-for="ShippingAddress.DelivaryInstructions"> </textarea>
+			</div>
+		</div>
+
+		<input type="hidden" asp-for="MemberId" /> @*to return the id with the object*@
+		<input type="hidden" asp-for="MemberAddress.AddressId" /> @*to return the id with the object*@
+		<input type="hidden" asp-for="MemberAddress.IsShipping" value="false" /> @*to return the id with the object*@
+		<input type="hidden" asp-for="ShippingAddress.AddressId" /> @*to return the id with the object*@
+		<input type="hidden" asp-for="ShippingAddress.IsShipping" value="true" /> @*to return the id with the object*@
+
+		<!---------------------Save Button------------------------------>
+		<div>
+			<div class=" flex-row d-flex ">
+				<button type="submit" class=" viewComponent btn btn-custom btn-lg">Save</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script>
+	// Get references to the radio buttons and input fields
+	const sameAsAddressCheckbox = document.getElementById('sameShippingAddress');
+	const shippingAddressDiv = document.getElementById('shippingAddressDiv');
+
+	if (sameAsAddressCheckbox.checked) {
+		shippingAddressDiv.hidden = true; // will hide the shipping address div
+	}
+	else {
+		shippingAddressDiv.hidden = false; // will show the shipping address div
+	}
+
+	// Function to handle radio button change
+	function handleRadioChange() {
+		if (sameAsAddressCheckbox.checked) {
+			shippingAddressDiv.hidden = true; // will hide the shipping address div
+			
+			// Copy values from billing address to shipping address
+			$("#unitShipping").val($("#unit").val());
+			$("#streetNoShipping").val($("#streetNo").val());
+			$("#streetNameShipping").val($("#streetName").val());
+			$("#cityShipping").val($("#city").val());
+			$("#postalCodeShipping").val($("#postalCode").val());
+			$("#shippingAddress_Province").val($("#MemberAddress_Province").val());
+			$("#shippingAddress_Country").val($("#MemberAddress_Country").val());
+
+			
+		}
+		else {
+			shippingAddressDiv.hidden = false; // will show the shipping address div
+		}
+	}
+
+	// Add event listeners to radio buttons
+	sameAsAddressCheckbox.addEventListener('change', handleRadioChange);
+
+//-------------------------------------------------------------------------
+
+	$(document).ready(function() {
+		// Define a regex pattern for Canadian postal code validation
+		var postalCodePattern = /^[A-Z]\d[A-Z][ ]\d[A-Z]\d$/;
+
+		// Function to validate postal code
+		function validatePostalCode() {
+			var postalCode = $("#postalCode").val();
+			if (postalCodePattern.test(postalCode)) {
+				$("#postalCodeError").text("").removeClass("errorValidation").addClass("valid");
+			} else {
+				$("#postalCodeError").text("Invalid postal code 'A1A 2B2'.").removeClass("valid").addClass("errorValidation");
+			}
+		}
+
+		// Function to validate shipping postal code
+		function validateShippingPostalCode() {
+			var postalCodeShipping = $("#postalCodeShipping").val();
+			if (postalCodePattern.test(postalCodeShipping)) {
+				$("#postalCodeShippingError").text("").removeClass("errorValidation").addClass("valid");
+			} else {
+				$("#postalCodeShippingError").text("Invalid postal code 'A1A 2B2'").removeClass("valid").addClass("errorValidation");
+			}
+		}
+
+		// Validate on input change
+		$("#postalCode").on("change", validatePostalCode);
+		$("#postalCodeShipping").on("change", validateShippingPostalCode);
+
+		// Validate on form submit
+		$("#addressForm").on("submit", function(event) {
+			validatePostalCode();
+
+			if (!sameAsAddressCheckbox.checked) {
+				validateShippingPostalCode();
+			}
+
+			// Prevent form submission if any errors exist
+			if ($(".errorValidation:visible").length > 0) {
+				event.preventDefault(); // Prevent form submission
+			}
+		});
+	});
+</script>

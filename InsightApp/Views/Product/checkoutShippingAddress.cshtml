@@ -1,0 +1,191 @@
+﻿@model CheckoutViewModel
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			console.log("Shipping Address:", "@ViewBag.ShippingAddress");
+			
+			// Check if Hasphysical is false from the model
+			var hasPhysical = @Model.HasPhysicalItems;
+
+			if (@Model.HasPhysicalItems == 0) {
+				document.getElementById("noPhysicalItemsMessage").style.display = "block"; // Show the noPhysicalItemsMessage
+			} else {
+
+				document.getElementById("noPhysicalItemsMessage").style.display = "none"; // Hide the noPhysicalItemsMessage if Hasphysical is true
+
+				//if there is a physical item, the next button will be deactivated until the shipping address filled
+				if ("@ViewBag.ShippingAddress" === "not-found") {
+					document.getElementById("nextButton").style.opacity = 0.5;
+					document.getElementById("nextButton").style.pointerEvents = "none";
+					//document.getElementById("nextButton").style.cursor = "not-allowed";
+				}
+			}
+		});
+
+		// document.addEventListener("DOMContentLoaded", function () {
+		// 	var unitInput = document.getElementById("unitShipping");
+		// 	// Ensure empty string by default if not populated
+		// 	unitInput.value = unitInput.value || "";
+		// });
+	</script>	
+}
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+			<li class="breadcrumb-item"><a asp-controller="Product" asp-action="products">Game</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="Cart">Cart</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Check out</li>
+        </ol>
+    </nav>
+</div>
+<h1>Checkout</h1>
+<div class="checkout-container">
+    
+	<!-- Shipping Address -->
+	<div class="col-12 side">
+		<form id="shippingAddressForm" asp-controller="Product" asp-action="AddShippingAddress" method="post" enctype="application/x-www-form-urlencoded">
+			<h6>Shipping Address</h6>
+			<!----shipping Address-------->
+			<div >
+				<!-- Form Row-->
+				<div class="row gx-3 mb-3">
+					<!-- Form Group (Unit)-->
+					<div class="col-md-6">
+						<label class="small mb-1" for="unitShipping">Unit</label>
+						<input class="form-control"  type="text" asp-for="ShippingAddress.Unit" data-val="false">
+					
+					</div>
+					<!-- Form Group (Street No)-->
+					<div class="col-md-6">
+						<label class="small mb-1 required-label" for="streetNoShipping">Street Number</label>
+						<input class="form-control"  type="text" asp-for="ShippingAddress.StreetNumber">
+						<span asp-validation-for="ShippingAddress.StreetNumber" class="text-danger"></span>
+					</div>
+				</div>
+				<!-- Form Row-->
+				<div class="row gx-3 mb-3">
+					<!-- Form Group (Street Name)-->
+					<div class="col-md-6">
+						<label class="small mb-1 required-label" for="streetNameShipping">Street Name</label>
+						<input class="form-control"  type="text" asp-for="ShippingAddress.StreetName">
+						<span asp-validation-for="ShippingAddress.StreetName" class="text-danger"></span>
+					</div>
+					<!-- Form Group (City)-->
+					<div class="col-md-6">
+						<label class="small mb-1 required-label" for="cityShipping">City</label>
+						<input class="form-control" type="text" asp-for="ShippingAddress.City">
+						<span asp-validation-for="ShippingAddress.City" class="text-danger"></span>
+					</div>
+				</div>
+
+				<!-- Form Row-->
+				<div class="row gx-3 mb-3">
+					<!-- Form Group (Postal Code)-->
+					<div class="col-md-6">
+						<label class="small mb-1 required-label" for="postalCodeShipping">Postal Code</label>
+						<input class="form-control" id="shippingPostalCode" type="text" asp-for="ShippingAddress.PostalCode">
+						<span id="shippingPostalCodeError" class="error"></span>
+					</div>
+				</div>
+				<!-- Form Row-->
+				<div class="row gx-3 mb-3">
+					<!-- Form Group (Province)-->
+					<div class="col-md-6">
+						<label class="small mb-1 required-label" for="inputPhone">Province</label>
+						<select class="form-control" asp-for="ShippingAddress.Province">
+							<option value="">Select...</option>
+							@foreach (Province province in Model.Provinces)
+							{
+								<option value="@province.ProvinceName">@province.ProvinceName</option>
+							}
+						</select>
+						<span asp-validation-for="ShippingAddress.Province" class="text-danger"></span>
+					</div>
+					<!-- Form Group (Country)-->
+					<div class="col-md-6">
+						<label class="small mb-1 required-label" for="inputPhone">Country</label>
+						<select class="form-control" asp-for="ShippingAddress.Country">
+							<option value="">Select...</option>
+							@foreach (Country country in Model.Countries)
+							{
+								<option value="@country.CountryName">@country.CountryName</option>
+							}
+						</select>
+						<span asp-validation-for="ShippingAddress.Country" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Form Row DelivaryInstructions-->
+			<div class="row gx-3 mb-3">
+				<!-- Form Group (Province)-->
+				<div class="col-md-6">
+					<label class="small mb-1" for="provinceShipping">Delivery Instructions</label>
+					<textarea maxlength="500" class="form-control" asp-for="ShippingAddress.DelivaryInstructions"> </textarea>
+				</div>
+			</div>
+
+			
+			<input type="hidden" asp-for="ShippingAddress.AddressId" /> @*to return the id with the object*@
+			<input type="hidden" asp-for="ShippingAddress.IsShipping" value="true" /> @*to return the id with the object*@
+			<div>
+				<div class=" flex-row d-flex ">
+					<button type="submit" class=" viewComponent btn btn-custom btn-lg">Update Address</button>
+				</div>
+			</div>
+			<!--hidden message -->
+			<p id="noPhysicalItemsMessage" style="background-color:lightgoldenrodyellow; margin-top:10px; display: none;"> "There is no physical items to be shipped."</p>
+		</form>
+	</div>
+
+</div>
+
+<!-- Order Summary -->
+<div class="summaryCheckout">
+    <div class="col-6">
+		<h2>Order Summary</h2>
+		<div class="summary-total">
+			<h3>Total: <span>$@Model.TotalPrice</span></h3>
+		</div>
+	</div>
+	<a role="button" asp-controller="Product" asp-action="CheckoutCredit" id="nextButton" class="nextButton">NEXT</a>
+</div>
+
+<script>
+	$(document).ready(function () {
+		// Define a regex pattern for Canadian postal code validation
+		var postalCodePattern = /^[A-Z]\d[A-Z][ ]\d[A-Z]\d$/;
+
+		// Function to validate shipping postal code
+		function validateShippingPostalCode() {
+			console.log("Validating postal code..."); // Add this for debugging
+			var postalCodeShipping = $("#shippingPostalCode").val();
+			if (postalCodePattern.test(postalCodeShipping)) {
+				$("#shippingPostalCodeError").text("").removeClass("errorValidation").addClass("valid");
+			} else {
+				$("#shippingPostalCodeError").text("Invalid postal code 'A1A 2B2'").removeClass("valid").addClass("errorValidation");
+			}
+		}
+
+		// Validate on input change
+		$("#shippingPostalCode").on("change", validateShippingPostalCode);
+
+		// Validate on form submit
+		$("#shippingAddressForm").on("submit", function (event) {
+			validateShippingPostalCode();
+
+			// Prevent form submission if any errors exist
+			if ($(".errorValidation:visible").length > 0) {
+				event.preventDefault(); // Prevent form submission
+			}
+		});
+	}); // <-- Add this closing parenthesis and semicolon
+</script>
+
+
+

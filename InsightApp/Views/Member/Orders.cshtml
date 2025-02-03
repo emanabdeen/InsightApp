@@ -1,0 +1,67 @@
+﻿@model List<OrderTable>
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Orders</li>
+        </ol>
+    </nav>
+</div>
+<div class="cart-container">
+    <h3>Your Orders</h3>
+
+    @if (Model == null || !Model.Any())
+    {
+        <!-- Show message when orders is empty -->
+        <div class="empty-cart row">
+                <div>
+                    <img src="~/Imgs/empty.jpg" alt="No orders">
+                </div>
+                <hr />
+                <h5>No Orders Yet</h5>
+                <div style="align-self:center; margin-top:30px; margin-bottom:30px;">
+                    <a asp-controller="Product" asp-action="products" role="button" class="btnCont">Shop Now</a>
+                </div>
+
+        </div>
+    }
+    else
+    {
+
+        <!----------------table------------->
+        <div class="d-flex flex-row bd-highlight mb-3">
+            <table class="table table-bordered table-striped itemsPage">
+                <thead>
+                    <tr>
+                        <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:50px">Order</th>
+                        <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:150px">Date</th>
+                        <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:150px">Total Payment</th>
+                        <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:200px"> Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model)
+                    {
+                        <tr>
+                            <td class="itemsPage"><a asp-controller="Member" asp-action="OrderItems" asp-route-id="@o.OrderId"># @o.OrderId </a> </td>
+                            <td class="itemsPage"> @o.OrderDate</td>
+                            <td class="itemsPage">$ @o.TotalPayment</td>
+                            @if (o.OrderFulfilled)
+                            {
+                                <td class="itemsPage"> Order Fulfilled </td>
+                            }
+                            else
+                            {
+                                <td class="itemsPage"> Order in Process </td>
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+    }
+</div>

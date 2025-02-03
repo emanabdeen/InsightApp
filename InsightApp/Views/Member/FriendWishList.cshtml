@@ -1,0 +1,54 @@
+@model List<WishlistViewModel>
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="GetFriends">Friends</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Friend Wish List</li>
+        </ol>
+    </nav>
+</div>
+@* <h1 style="margin-bottom:25px;">My Wishlist</h1> *@
+<div class="wishlist-container">
+    
+    @if (Model == null || !Model.Any())
+    {
+        <!-- Show message when cart is empty -->
+        <div class="empty-cart row">
+
+            <div>
+                <img src="~/Imgs/empty.jpg" alt="No items">
+            </div>
+            <hr />
+            @if (ViewBag.Friend == "Non-Friend")
+            {
+                <h5> You are not friends with this user</h5>
+            }
+            else
+            {
+                <h5> @ViewBag.Friend Wish list is empty</h5>
+                <div style="align-self:center; margin-top:30px; margin-bottom:30px;">
+                    @* <a asp-controller="Product" asp-action="products" role="button" class="btnCont">Shop Now</a> *@
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            <!-- Example of product item -->
+            <div class="product-item">
+                    <div class="product-info col-4">
+                    <img src="@Url.Content(item.GameImageLink)" alt="Game Cover Image">
+                    <h2>@item.GameName</h2>
+                </div>
+                <h6 class="col-4">$ @item.Price</h6>
+            </div>
+        }
+    }
+    
+
+</div>

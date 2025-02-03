@@ -1,0 +1,35 @@
+--1) At appsettings.json: [remember to add the correct server name]
+
+"AllowedHosts": "*",
+  "ConnectionStrings": {
+    "SVGSContext": "Server=DESKTOP-19ISELD;Database=InsightCVGS;Trusted_Connection=True;MultipleActiveResultSets=true; TrustServerCertificate=true"
+  }
+
+
+
+--2) At Program.cs: add this line before [var app = builder.Build();]
+
+  var connStr = builder.Configuration.GetConnectionString("SVGSContext");
+
+
+
+--3) At Package Manager console [Tools > Nuget Package Manager >  Package Manager console] write this and hit enter
+
+Scaffold-DbContext -Connection name=SVGSContext -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -ContextDir Entities -DataAnnotations –Force
+
+
+
+--4) At Program.cs: add this line before [var app = builder.Build();] and after [var connStr = builder.Configuration.GetConnectionString("SVGSContext");]
+
+builder.Services.AddDbContext<SVGSDbContext>(options => options.UseSqlServer(connStr));
+
+
+========================================================================================================
+note that:
+
+* Server name = DESKTOP-19ISELD  [it will be different from device to other]
+
+* ConnectionStrings = SVGSContext
+
+all the classes (entities/tables) will be created under "Entities" folder  (-OutputDir Entities)
+the context file will be created also under "Entities" folder  (-ContextDir Entities)

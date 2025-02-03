@@ -1,0 +1,51 @@
+﻿@using InsightApp.Entities
+@model MemberPreferencesViewModel
+@inject InsightUpdateCvgs2Context dbContext
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+<div class="card-body">
+    <form asp-action="SubmitPreferences" asp-controller="Member" method="post" enctype="application/x-www-form-urlencoded">
+        <div class="PrefrencesContainer ">
+            <div class="prefrencesColumn col-4">
+                <h5>Favorite Platforms</h5>
+                @foreach (var platform in Model.AllPlatforms)
+                {
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="SelectedPlatformIds" value="@platform.PlatformId"
+                        @(Model.SelectedPlatformIds.Contains(platform.PlatformId) ? "checked" : "") />
+                        <label class="form-check-label">@platform.PlatformName</label>
+                    </div>
+                }
+            </div>
+
+            <div class="prefrencesColumn col-4" style="margin-left:5px; margin-right:5px;">
+                <h5>Favorite Game Categories</h5>
+                @foreach (var category in Model.AllCategories)
+                {
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="SelectedCategoryIds" value="@category.CategoryId"
+                        @(Model.SelectedCategoryIds.Contains(category.CategoryId) ? "checked" : "") />
+                        <label class="form-check-label">@category.CategoryName</label>
+                    </div>
+                }
+            </div>
+
+            <div class="prefrencesColumn col-4">
+                <h5>Language Preferences</h5>
+                @foreach (var language in Model.AllLanguages)
+                {
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="SelectedLanguageIds" value="@language.LanguageId"
+                        @(Model.SelectedLanguageIds.Contains(language.LanguageId) ? "checked" : "") />
+                        <label class="form-check-label">@language.LanguageName</label>
+                    </div>
+                }
+            </div>
+        </div>
+        <input type="hidden" asp-for="MemberId"/>
+        <button type="submit" class=" viewComponent btn btn-custom btn-lg">Save Preferences</button>
+    </form>
+</div>

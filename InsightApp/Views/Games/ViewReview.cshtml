@@ -1,0 +1,122 @@
+﻿@model Review
+
+<link rel="stylesheet" href="~/css/Review.css" />
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Games" asp-action="Reviews">Reviews</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Updating Review</li>
+        </ol>
+    </nav>
+</div>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger mx-auto text-center " style="max-width:500px; padding: 15px; border-radius: 8px;">
+        @TempData["ErrorMessage"]
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            showRejectForm(); // Show reject form if there's an error message
+        });
+    </script>
+}
+<div class="container mt-5">
+    <div class="card shadow-sm p-4">
+        <h2 class="card-title mb-4 text-center">Review Details</h2>
+        <hr />
+
+        <div class="row mb-3">
+            <div class="col-md-4 font-weight-bold">Game:</div>
+            <div class="col-md-8">@ViewBag.GameName</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4 font-weight-bold">Reviewed by:</div>
+            <div class="col-md-8">@ViewBag.Reviewer</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4 font-weight-bold">Status:</div>
+            <div class="col-md-8">
+                <span class="badge bg-warning">@Model.Status.Statusname</span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4 font-weight-bold">Review:</div>
+            <div class="col-md-8">@Model.ReviewBody</div>
+        </div>
+
+        <hr />
+
+        <!-- Action Buttons -->
+        <div class="text-center">
+            <div id="actionButtons" >
+                <form method="post" asp-action="ApproveReview" asp-route-id="@Model.ReviewId" class="d-inline-block" >
+                    <button type="submit" class="btn btn-success me-2 px-4">Approve</button>
+                </form>
+
+                <button id="rejectButton" class="btn btn-danger px-4" onclick="showRejectForm()">Reject</button>
+            </div>
+
+            <!-- Reject Form -->
+            <div id="rejectForm" class="d-none">
+                <form id="confirmRejection" method="post" asp-action="DeclineReview">
+                    <div class="mb-3">
+                        <input type="hidden" name="reviewId" value="@Model.ReviewId" />
+                        <label for="reason" class="form-label">Reason for Declining:</label>
+                        <textarea id="reason" name="rejectReason" class="form-control mb-3" rows="3" ></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger me-2 px-4">Submit Rejection</button>
+                    <button type="button" class="btn btn-secondary px-4" onclick="hideRejectForm()">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let rejectionInProgress = false;
+
+    function showRejectForm() {
+        document.getElementById('actionButtons').classList.add('d-none');
+        document.getElementById('rejectForm').classList.remove('d-none');
+        rejectionInProgress = true; // User started the rejection process
+    }
+
+    function hideRejectForm() {
+        document.getElementById('rejectForm').classList.add('d-none');
+        document.getElementById('actionButtons').classList.remove('d-none');
+        rejectionInProgress = false; // Reset rejection flag
+    }
+
+    // Check if the error message exists and show the reject form
+    document.addEventListener('DOMContentLoaded', function () {
+        if (document.getElementById('errorMessage')) {
+            showRejectForm();
+        }
+    });
+
+    // Add a confirmation dialog when trying to leave the page
+    window.addEventListener('beforeunload', function (e) {
+        if (rejectionInProgress) {
+            e.preventDefault(); // Necessary for some browsers
+            e.returnValue = "You have unsaved changes. Are you sure you want to leave this page?";
+            return e.returnValue; // Required for confirmation dialog
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const confirmRejection = document.getElementById('confirmRejection'); // Select by id
+
+        if (confirmRejection) {
+            confirmRejection.addEventListener('submit', function () {
+                rejectionInProgress = false; // Disable the confirmation dialog
+            });
+        }
+    });
+    
+</script>

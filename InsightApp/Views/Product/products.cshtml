@@ -1,0 +1,41 @@
+﻿@model GamesListModel
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Games</li>
+        </ol>
+    </nav>
+</div>
+<!------Search bar & Add new Game Button---->
+
+    <!----Search Form----->
+<form class="col-sm-7" asp-controller="Product" asp-action="products" method="post" enctype="application/x-www-form-urlencoded">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for game" asp-for="@Model.SearchText">
+            <div class="input-group-append">
+                <button class="btn btn-secondary" type="submit">
+                    <a style="color: white;"><i class="bi bi-search"></i></a>
+                </button>
+            </div>
+        </div>
+    </form>
+
+<div class="productsContainer">
+    @foreach (var g in Model.GamesList)
+    {
+        <div class="cardProducts">
+            <img src="@Url.Content(g.GameImageLink)" alt="Game Cover Image">
+            <div class="card-content">
+                <div>
+                    <h6 style="text-align:left;">@g.GameName</h6>
+                    <h6 style="text-align:left;">@(g.GamePrice > 0 ? "$" + @g.GamePrice?.ToString("F2") : "FREE")</h6>
+                </div>
+
+                <a asp-controller="Product" asp-action="details" asp-route-id="@g.GameId" role="button" class="btnView">View</a>
+            </div>
+        </div>
+    }
+</div>

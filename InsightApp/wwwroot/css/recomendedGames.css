@@ -1,0 +1,7 @@
+﻿.tags p {
+    white-space: normal; /* Allow text wrapping */
+    word-wrap: break-word; /* Break words if necessary */
+    margin: 0; /* Remove extra margin */
+    font-size: 0.8rem; /* Adjust font size if needed */
+    text-align: center; /* Optional: Center the text */
+}

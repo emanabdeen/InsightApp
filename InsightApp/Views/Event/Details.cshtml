@@ -1,0 +1,191 @@
+﻿@model EventDetailViewModel
+
+@{
+    ViewData["Title"] = Model.ActiveEvent.EventName;
+}
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<div class="d-inline-flex p-2 bd-highlight flex-column justify-content-start">
+    <h7 class="myHeader">Conestoga Virtual Game Store - Admin Panel</h7>
+
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Event" asp-action="GetAllEvents">Events</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Event Details</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="pageBody">
+    <!-----------------------page title------------------------------->
+    <div style="margin-top:15px">
+        <h2 class="myHeader" style="text-align:center;">@Model.ActiveEvent.EventName</h2>
+    </div>
+
+    <!------------------------------------------------------>
+    <div class="formFrame">
+    
+        <!-------EventName----------->
+        <div class="form-group row" style="margin-bottom:25px;">
+            <div class="col-sm-2"><label class="lablesForm">Event Title:</label></div>
+            <div class="col-sm-10 detailsPage">
+                <p class="detailsPage">@Model.ActiveEvent.EventName</p>
+            </div>
+        </div>
+        <!-------Details----------->
+        <div class="form-group row" style="margin-bottom:25px;">
+            <div class="col-sm-2"><label class="lablesForm">Event Details:</label></div>
+            <div class="col-sm-10 detailsPage">
+                <p class="detailsPage">@Model.ActiveEvent.Details</p>
+            </div>  
+        </div>
+        <!-------StartDate----------->
+        <div class="form-group row" style="margin-bottom:25px;">
+            <div class="col-sm-2"><label class="lablesForm">Start Date:</label></div>
+            <div class="col-sm-10 detailsPage">
+                <p class="detailsPage">@Model.ActiveEvent.StartDate</p>
+            </div>
+        </div>
+    
+        <!-------EndDate----------->
+        <div class="form-group row" style="margin-bottom:25px;">
+            <div class="col-sm-2"><label class="lablesForm ">End Date:</label></div>
+            <div class="col-sm-10 detailsPage">
+                <p class="detailsPage">@Model.ActiveEvent.EndDate</p>
+            </div>
+        </div>
+
+        <!-------StartTime----------->
+        <div class="form-group row" style="margin-bottom:25px;">
+            <div class="col-sm-2"><label class="lablesForm ">Start Time:</label></div>
+            <div class="col-sm-10 detailsPage">
+                <p class="detailsPage">@Model.ActiveEvent.StartTime</p>
+            </div>
+        </div>
+
+        <!-------EndTime----------->
+        <div class="form-group row" style="margin-bottom:25px;">
+            <div class="col-sm-2"><label class="lablesForm ">Duration (hrs):</label></div>
+            <div class="col-sm-10 detailsPage">
+                <p class="detailsPage">@Model.ActiveEvent.Duration</p>
+            </div>
+        </div>
+
+        <!-------Event Type----------->
+        <div class="form-group row" style="margin-bottom:25px;">
+            <div class="col-sm-2"><label class="lablesForm ">Event Type:</label></div>
+            <div class="col-sm-10 detailsPage">
+                <p class="detailsPage">@Model.ActiveEvent.EvType.EvTypeName</p>
+            </div>
+        </div>
+    
+        <!------Address / Link ------->
+        @if (@Model.ActiveEvent.EvType.EvTypeName == "Virtual")
+        {
+            <div class="form-group row" style="margin-bottom:25px;">
+                <div class="col-sm-2"><label class="lablesForm ">Event Link:</label></div>
+                <div class="col-sm-10 detailsPage">
+                    <p class="detailsPage">@Model.ActiveEvent.EventLink</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="form-group row" style="margin-bottom:25px;">
+                <div class="col-sm-2"><label class="lablesForm ">Event Address:</label></div>
+                <div class="col-sm-10 ">
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-4"><label class="lablesForm ">Street Number:</label></div>
+                        <div class="col-sm-8 detailsPage">
+                            <p class="detailsPage">@Model.ActiveEvent.Address.StreetNumber</p>
+                        </div>
+                    </div>
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-4"><label class="lablesForm ">Street Name:</label></div>
+                        <div class="col-sm-8 detailsPage">
+                            <p class="detailsPage">@Model.ActiveEvent.Address.StreetName</p>
+                        </div>
+                    </div>
+
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-4"><label class="lablesForm ">City:</label></div>
+                        <div class="col-sm-8 detailsPage">
+                            <p class="detailsPage">@Model.ActiveEvent.Address.City</p>
+                        </div>
+                    </div>
+
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-4"><label class="lablesForm ">Province:</label></div>
+                        <div class="col-sm-8 detailsPage">
+                            <p class="detailsPage">@Model.ActiveEvent.Address.Province</p>
+                        </div>
+                    </div>
+
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-4"><label class="lablesForm ">Country:</label></div>
+                        <div class="col-sm-8 detailsPage">
+                            <p class="detailsPage">@Model.ActiveEvent.Address.Country</p>
+                        </div>
+                    </div>
+
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-4"><label class="lablesForm ">Postal Code:</label></div>
+                        <div class="col-sm-8 detailsPage">
+                            <p class="detailsPage">@Model.ActiveEvent.Address.PostalCode</p>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>  
+        }
+
+        <!-------Member registration----------->
+        <div class="form-group row" style="margin-bottom:7px;">
+            <div class="col-sm-2"><label class="lablesForm">No. Registrations:</label></div>
+            <div class="col-sm-2 detailsPage">
+                <p class="detailsPage">@Model.Registrations.ToString()</p>
+            </div>
+            <div class="col-sm-2"><p style="margin-bottom:0px;"><i>Member(s)</i></p></div>
+
+        </div>
+
+        <div style="margin-left:200px">
+            <div class=" flex-row d-flex justify-content-md-start">
+                <a asp-controller="Event" asp-action="GetEditRequestById" asp-route-id="@Model.ActiveEvent.EventId" class=" detailsPage btn-custom-Edite btn-outline-dark btn btn-lg">Edit</a>
+                <a asp-controller="Event" asp-action="ProcessDeleteRequest" asp-route-id="@Model.ActiveEvent.EventId" class=" detailsPage btn-custom-Delete btn-outline-dark btn btn-lg delete-link" data-name="@Model.ActiveEvent.EventName">Delete</a>
+                <a asp-controller="Event" asp-action="GetAllEvents" class=" detailsPage btn-outline-dark btn btn-lg">Cancel</a>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.delete-link').on('click', function (e) {
+            var eventName = $(this).data('name');  // Get the event name from data attribute
+            var result = confirm('Are you sure you want to delete (' + eventName + ')?');
+            if (!result) {
+                e.preventDefault(); // Prevents the delete action if user clicks 'Cancel'
+            }
+        });
+    });
+</script>
+
+
+
+

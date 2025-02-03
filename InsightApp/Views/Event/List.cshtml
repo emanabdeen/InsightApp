@@ -1,0 +1,90 @@
+﻿@model EventListModel
+@{
+    ViewBag.Title = "Search Events";
+    ViewBag.SearchText = "";
+}
+
+<div class="d-inline-flex p-2 bd-highlight flex-column justify-content-start">
+    <h7 class="myHeader">Conestoga Virtual Game Store - Admin Panel</h7>
+    
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Events</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="pageBody">
+
+    <!------Title------------->
+    <div class="d-flex justify-content-center" style="margin-top:10px">
+        <h2 class="pageTitle" style="color:rgb(80, 140, 155);">Events</h2>
+    </div>
+    
+    <!------Search bar & Add new Event Button---->
+
+    <div class="d-flex align-items-center justify-content-between flex-row">
+        <!----Search Form----->
+        <form class="col-sm-7" asp-controller="Event" asp-action="GetsearchResultEvents" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for event" asp-for="@Model.SearchText">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit">
+                        <a style="color: white;"><i class="bi bi-search"></i></a>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!------Add new Event Button---->
+        <div class="col-lg-4 d-flex justify-content-end ">
+            <a asp-controller="Event" asp-action="GetAddEventRequest" role="button" class=" btn btn-outline-dark btn-xlg AddNewButton">Add New Event</a>
+        </div>
+    </div>
+     
+
+    <!----------------table------------->
+    <div class="d-flex flex-row bd-highlight mb-3">
+        <table class="table table-bordered table-striped itemsPage">
+            <thead>
+                <tr>
+                    <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:500px">Title</th>
+                    <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:150px">Date</th>
+                    <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:150px">Event Type</th>
+                    <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:200px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ev in Model.EventList)
+                {
+                    <tr>
+                        <td > <a asp-controller="Event" asp-action="GetEventById" asp-route-id="@ev.EventId">@ev.EventName</a></td>
+                        <td class="itemsPage"> @ev.StartDate</td>
+                        <td class="itemsPage"> @ev.EvType.EvTypeName</td>
+
+                        <td class="itemsPage">
+                            <a asp-controller="Event" asp-action="GetEditRequestById" asp-route-id="@ev.EventId">Edit</a>
+                            <span class="mx-1">|</span>
+                            <a asp-controller="Event" asp-action="ProcessDeleteRequest" asp-route-id="@ev.EventId" class="delete-link" data-name="@ev.EventName">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.delete-link').on('click', function (e) {
+            var eventName = $(this).data('name');  // Get the event name from data attribute
+            var result = confirm('Are you sure you want to delete (' + eventName + ')?');
+            if (!result) {
+                e.preventDefault(); // Prevents the delete action if user clicks 'Cancel'
+            }
+        });
+    });
+</script>
+

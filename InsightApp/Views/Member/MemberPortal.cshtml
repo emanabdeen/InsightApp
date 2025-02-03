@@ -1,0 +1,58 @@
+﻿<div class="text-center">
+    <h1 class="display-4" style="text-shadow: 6px 2px 10px rgba(0,0,0,0.3);">Conestoga Virtual Game Store</h1>
+    <div style="margin-top:30px">
+        <h2 class="myHeader">Member Portal</h2>
+    </div>
+
+
+    <div class="row row-cols-1 row-cols-md-3 g-4" style="margin-top:40px;">
+        <div class="col">
+            <a asp-controller="Product" asp-action="products">
+				<div class="card">
+					<figure style="margin:0px;">
+						<img src="~/Imgs/Games_title.png" class="card-img-top" alt="Games banner">
+						<figcaption><a href="http://www.freepik.com" style="font-size:8px; color:lightgray;">Designed by Freepik</a></figcaption>
+					</figure>
+					<div class="card-body">
+						<h5 class="card-title">GAMES</h5>
+						<p class="card-text"></p>
+					</div>
+				</div>
+            </a>
+                
+        </div>
+        <div class="col">
+            <a asp-controller="PortalEvents" asp-action="GetEvents">
+                <div class="card">
+                    <figure style="margin:0px;">
+                        <img src="~/Imgs/Events_title.png" class="card-img-top" alt="Events banner">
+                        <figcaption><a href="http://www.freepik.com" style="font-size:8px; color:lightgray;">Designed by Freepik</a></figcaption>
+                    </figure>
+                    <div class="card-body">
+                        <h5 class="card-title">EVENTS</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+
+        <div class="col">
+            <a asp-controller="Member" asp-action="GetFriends">
+            <div class="card">
+                <figure style="margin:0px;">
+                    <img src="~/Imgs/Friends_title.png" class="card-img-top" alt="Friends banner">
+                    <figcaption><a href="http://www.freepik.com" style="font-size:8px; color:lightgray;">Designed by Freepik</a></figcaption>
+                </figure>
+                <div class="card-body">
+                    <h5 class="card-title">FRIENDS</h5>
+                    <p class="card-text"></p>
+                </div>
+            </div>
+               </a>
+        </div>
+            
+    </div>
+</div>
+

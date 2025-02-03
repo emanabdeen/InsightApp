@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\Generated\**" />
+    <Compile Remove="Entity\**" />
+    <Content Remove="Entities\Generated\**" />
+    <Content Remove="Entity\**" />
+    <EmbeddedResource Remove="Entities\Generated\**" />
+    <EmbeddedResource Remove="Entity\**" />
+    <None Remove="Entities\Generated\**" />
+    <None Remove="Entity\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Imgs\TeamLogo.png" />
+    <Content Remove="wwwroot\lib\Imgs\TeamLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.ReCaptcha" Version="1.8.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Imgs\Events_title.png" />
+    <None Include="wwwroot\Imgs\Friends_title.png" />
+    <None Include="wwwroot\Imgs\Games_title.png" />
+    <None Include="wwwroot\Imgs\TeamLogo.png" />
+    <None Include="wwwroot\lib\Imgs\TeamLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\" />
+  </ItemGroup>
+
+</Project>

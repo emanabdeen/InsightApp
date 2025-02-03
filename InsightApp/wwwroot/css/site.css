@@ -1,0 +1,295 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    border: solid;
+    border-block-color: gray;
+    border-right-color: gray;
+    border-left-color: gray;
+    border-block-width: thick;
+    border-left-width: thick;
+    border-right-width: thick;
+    margin: 1px;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.required-label::after {
+    content: " *";
+    color: red;
+}
+
+h2.myHeader {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: black;
+    text-shadow: 6px 2px 10px rgba(0,0,0,0.3);
+}
+
+h7.myHeader {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: lightslategray;
+    font-size: 20px;
+    text-decoration-line: underline;
+}
+.home-link i {
+    transition: color 0.2s ease; /* Smooth transition */
+}
+.home-link:hover i {
+    color: #007bff; /* Change to your desired hover color */
+}
+
+button.homePage {
+    margin-bottom: 20px;
+    width: 30%;
+    color: white;
+}
+
+button.pageForm {
+    width: 15%;
+    color: white;
+    background-color: rgb(80, 140, 155);
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+button.pageFormGame {
+    width: 15%;
+    color: white;
+    background-color: #50C878;
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+button.viewComponent {
+    width: 30%;
+    color: white;
+    background-color: rgb(80, 140, 155);
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+.btn-custom:hover {
+    background-color: black; /* New color on hover */
+    color: white; /* Text color on hover */
+}
+
+.btn-custom-Delete:hover {
+    background-color: firebrick; /* New color on hover */
+    color: white; /* Text color on hover */
+}
+
+.btn-custom-Edite:hover {
+    background-color: rgb(80, 140, 155); /* New color on hover */
+    color: white; /* Text color on hover */
+}
+
+a.pageForm {
+    width: 15%;
+    color: rgb(80, 140, 155);
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+a.pageFormGame {
+    width: 15%;
+    color: #50C878;
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+a.detailsPage {
+    width: 30%;
+    color: rgb(80, 140, 155);
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+a.custom-btn:hover {
+    color: black;
+    background-color: rgb(80, 140, 155);
+}
+
+a.homePage {
+    margin-bottom: 15px;
+    width: 50%;
+    color: white;
+}
+
+a.MemberPanel {
+    margin-bottom: 30px;
+    width: 50%;
+    color: black;
+}
+
+img.header {
+    width: 100%;
+    max-width: 60px;
+    display: block;
+    margin: 0 auto;
+}
+
+h2.pageTitle {
+    margin-top: 5px;
+    margin-bottom: 30px;
+    text-shadow: 2px 1px 20px rgba(0,0,0,0.4);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 50px;
+    font-weight: bolder;
+}
+
+th.tableHheader {
+    font-weight: bolder;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+}
+
+td.itemsPage {
+    text-align: center;
+    font-size: 16px;
+    align-content:center;
+}
+
+table.itemsPage {
+    width: 100%;
+    margin-top: 30px;
+}
+
+a.AddNewButton {
+    box-shadow: 14px 5px 38px -7px rgba(0,0,0,0.3);
+    font-size: 16px;
+    height: 50px;
+    width: 200px;
+    font-size: 20px;
+}
+
+label.lablesForm {
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding-top: 3px;
+}
+
+textarea {
+    height: 100px; /* Adjust the height in pixels */
+}
+
+p.detailsPage {
+    margin-bottom: 0px;
+    padding-top: 3px;
+    padding-top: 3px;
+    padding-left: 10px;
+}
+
+div.detailsPage {
+    background-color: rgb(80, 140, 155, 0.15);
+    border-radius: 3px;
+    padding-bottom: 5px;
+}
+
+div.pageBody {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+div.formFrame {
+    margin-top: 40px;
+    padding-top: 40px;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-bottom: 40px;
+    border: groove;
+    border-radius: 3px;
+    padding: 40px;
+    box-shadow: 33px -20px 37px -27px rgba(80,140,155,0.5);
+}
+
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    float: left;
+    display: inline-block;
+    
+}
+
+    nav ul li {
+        position: relative;
+        margin: 0 20px 0 0;
+        float: left;
+        display: inline-block;
+        
+    }
+
+
+        nav ul li a {
+            padding: 20px;
+            display: inline-block;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            
+        }
+
+nav ul li a:hover {
+    opacity: 0.5;
+}
+
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            left: 0;
+            float: left;
+            width: 120%;
+            background-color: white;
+        }
+
+nav ul li ul li {
+    width: 100%;
+    height: 50px;
+    border-bottom: 3px solid rgba(80,140,155,0.5);
+    color: rgb(80, 140, 155);
+}
+
+nav ul li ul li a {
+    color: rgba(80,140,155);
+    font-weight: bolder;
+    padding: 20px;
+    font-size:15px;
+}
+
+nav ul li:hover ul {
+    display: block;
+}
+
+#logout {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.errorValidation{
+    color:red;
+}
+.validated{
+    color:green;
+}
+

@@ -1,0 +1,145 @@
+   @model FriendSearchViewModel;
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="GetFriends">Friends</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add Friend</li>
+        </ol>
+    </nav>
+</div>
+
+
+<div class="pageBody">
+
+    <!------Search bar & Add new Game Button---->
+
+    <div class="d-flex align-items-center justify-content-between flex-row">
+        <!----Search Form----->
+        <form class="col-sm-7" asp-controller="Member" asp-action="SearchFriend" method="get"  enctype="application/x-www-form-urlencoded">
+            <div class="input-group">
+                <input type="text" class="form-control" id="friendSearch" name="friendSearch" placeholder="Search member" value="@ViewBag.SearchTerm">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit">
+                        <a style="color: white;"><i class="bi bi-search"></i></a>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--Member search result list-->
+
+        @if(!String.IsNullOrEmpty(ViewBag.SearchTerm)){
+
+            if(!Model.SearchedMembers.Any()){
+
+                <br>
+                <span>No members found</span>
+                <div>
+                    <hr>
+
+                    <span style="font-style: italic;">Here are some suggestions:</span>
+                    <div class="card" style="margin-top: 15px;">
+                        <ul class="list-group list-group-flush">
+                
+                            @foreach(var member in Model.SuggestedFriends){
+                            
+                                <li class="list-group-item">
+                                    <div class="friend-parent">
+                                    
+                                        <span class=friend-label>@member.UserName</span>
+                                        <span></span>
+                                    
+                                        @if(!member.IsAlreadyFriend){
+                                            <span class=friend-btn-far-right>
+                                                <form asp-controller="Member" asp-action="AddFriend" asp-route-friendId="@member.FriendId" method="post" style="display: inline;" >
+                                                    <button type="submit" class="add-friend" >
+                                                        Add as Friend
+                                                    </button>
+                                                </form>
+                                            </span>
+                                        }else{
+                                            <span class="friend-already-exist">You are friends</span>
+                                        }
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+            }else{
+                ///procurou e achou
+                <div class="card" style="margin-top: 15px;">
+                    <ul class="list-group list-group-flush">
+            
+                        @foreach(var member in Model.SearchedMembers){
+                        
+                            <li class="list-group-item">
+                                <div class="friend-parent">
+                                
+                                    <span class=friend-label>@member.UserName</span>
+                                    <span></span>
+                                
+                                    @if(!member.IsAlreadyFriend){
+                                        <span class=friend-btn-far-right>
+                                            <form asp-controller="Member" asp-action="AddFriend" asp-route-friendId="@member.FriendId" method="post" style="display: inline;" >
+                                                <button type="submit" class="add-friend" >
+                                                    Add as Friend
+                                                </button>
+                                            </form>
+                                        </span>
+                                    }else{
+                                        <span class="friend-already-exist">You are friends</span>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+         
+
+
+            }
+
+
+        }else{
+             <br>
+                 <span style="font-style: italic;">Here are some suggestions:</span>
+
+            <div class="card" style="margin-top: 15px;">
+                
+                 
+                <ul class="list-group list-group-flush">
+            
+                    @foreach(var member in Model.SuggestedFriends){
+                    
+                        <li class="list-group-item">
+                            <div class="friend-parent">
+                            
+                                <span class=friend-label>@member.UserName</span>
+                                <span></span>
+                            
+                                @if(!member.IsAlreadyFriend){
+                                    <span class=friend-btn-far-right>
+                                        <form asp-controller="Member" asp-action="AddFriend" asp-route-friendId="@member.FriendId" method="post" style="display: inline;" >
+                                            <button type="submit" class="add-friend" >
+                                                Add as Friend
+                                            </button>
+                                        </form>
+                                    </span>
+                                }else{
+                                    <span class="friend-already-exist">You are friends</span>
+                                }
+                            </div>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+        }
+        
+</div>

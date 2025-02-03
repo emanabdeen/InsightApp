@@ -1,0 +1,330 @@
+﻿@model EventViewModel
+@{
+    ViewData["Title"] = "Add Event";
+}
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<div class="d-inline-flex p-2 bd-highlight flex-column justify-content-start">
+    <h7 class="myHeader">Conestoga Virtual Game Store - Admin Panel</h7>
+
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Event" asp-action="GetAllEvents">Events</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add New Event</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="pageBody">
+<!-----------------------page title------------------------------->
+    <div style="margin-top:15px">
+        <h2 class="myHeader">Add New Event</h2>
+    </div>
+
+    <!-----------------------form------------------------------->
+    <div class="formFrame">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <form asp-controller="Event" asp-action="AddNewEvent" method="post" enctype="application/x-www-form-urlencoded">
+
+            <!-------EventName----------->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm required-label">Event Title:</label></div>
+                <div class="col-sm-7">
+                    <input type="text" asp-for="ActiveEvent.EventName" class="form-control" />
+                </div>
+                <div class="col-sm-3">
+                    <span asp-validation-for="ActiveEvent.EventName" class="text-danger"></span>
+                </div>
+            </div>
+            <!-------Details----------->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm required-label">Event Details:</label></div>
+                <div class="col-sm-7">
+                    <textarea maxlength="500" asp-for="ActiveEvent.Details" class="form-control" > </textarea>
+                </div>
+                <div class="col-sm-3">
+                    <span asp-validation-for="ActiveEvent.Details" class="text-danger"></span>
+                </div>
+            
+            </div>
+            <!-------StartDate----------->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm required-label">Start Date:</label></div>
+                <div class="col-sm-5">
+                    <input type="date" asp-for="ActiveEvent.StartDate" class="form-control" required/>
+                </div>
+                <div class="col-sm-5">
+                    <span asp-validation-for="ActiveEvent.StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <!-------EndDate----------->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm">End Date:</label></div>
+                <div class="col-sm-5">
+                    <input type="date" asp-for="ActiveEvent.EndDate" class="form-control" />
+                </div>
+                <div class="col-sm-5">
+                    <span asp-validation-for="ActiveEvent.EndDate" class="text-danger"></span>
+                </div>
+            </div>
+            <!-------StartTime----------->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm required-label">Start Time:</label></div>
+                <div class="col-sm-5">
+                    <input type="time" asp-for="ActiveEvent.StartTime" class="form-control" required />
+                </div>
+                <div class="col-sm-5">
+                    <span asp-validation-for="ActiveEvent.StartTime" class="text-danger"></span>
+                </div>
+            </div>
+            <!-------EndTime----------->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm">Duration (hrs):</label></div>
+                <div class="col-sm-5">
+                    <input type="number" asp-for="ActiveEvent.Duration" class="form-control" min="0.5" max="24" step="0.5">
+                    @* <input type="time" asp-for="ActiveEvent.EndTime" class="form-control" /> *@
+                </div>
+                <div class="col-sm-5">
+                    <span asp-validation-for="ActiveEvent.Duration" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <!-- Event Type Selection  drop list -->
+            <!----------EvTypeId-------->
+            @* <div class="form-group row" style="margin-bottom:15px;">
+            <div class="col-sm-2"><label class="lablesForm required-label">Event Type:</label></div>
+                <div class="col-sm-5">
+                    <select asp-for="ActiveEvent.EventId" class="form-control" required>
+                        <option value="">Select a Event type..</option>
+                        @foreach (EventType evType in Model.EventTypes)
+                        {
+                            <option value="@evType.EvTypeId">@evType.EvTypeName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-5">
+                    <span asp-validation-for="ActiveEvent.EventId" class="text-danger"></span>
+                </div>
+            </div> *@
+
+            <!-- Event Type Selection  Radio button -->
+            <!----------EvTypeId-------->
+            <div class="form-group row" style="margin-bottom:30px; margin-top:30px;">
+                <div class="col-sm-2">
+                    <label class="lablesForm required-label">Event Type:</label>
+                </div>
+            
+                <div class="col-sm-10">
+                    @{
+                        // Track the index of the loop to select the first option
+                        var isFirst = true;
+                    }
+                    @foreach (EventType evType in Model.EventTypes)
+                    {
+                        <div class="form-check">
+                            @if (isFirst)
+                            {
+                                <input class="form-check-input" type="radio" asp-for="ActiveEvent.EvTypeId" value="@evType.EvTypeId" id="evType-@evType.EvTypeName" checked  required />
+                                isFirst = false; // Ensure only the first radio button gets 'checked'
+                            }else
+                            {
+                                <input class="form-check-input" type="radio" asp-for="ActiveEvent.EvTypeId" value="@evType.EvTypeId" id="evType-@evType.EvTypeName" required />
+                            }
+
+                            <label class="form-check-label" for="evType-@evType.EvTypeId">
+                                @evType.EvTypeName
+                            </label>
+                        </div>
+                    }
+                </div>
+            
+                <div class="col-sm-5">
+                    <span asp-validation-for="ActiveEvent.EventId" class="text-danger"></span>
+                </div>
+            </div>
+       
+
+            <!-------Event Link----------->
+            <div id= "eventLinkDiv" class="form-group row" style="margin-bottom:30px;">
+                <div class="col-sm-2"><label class="lablesForm required-label">Event Link:</label></div>
+                <div class="col-sm-6" style="padding-right:30px;">
+                    <input type="text" class="form-control" id="virtual-input" placeholder="Enter the events' link" asp-for="ActiveEvent.EventLink">
+                </div>
+                <div class="col-sm-4">
+                    <span id="virtual-input-valid-message" asp-validation-for="ActiveEvent.EventLink" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-------EventAddress----------->
+            <div id= "addressDiv" class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm ">Event Address:</label></div>
+                <div class="col-sm-10">
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-2"><label class="lablesForm required-label">Street Number:</label></div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="on-site-input1" asp-for="ActiveEvent.Address.StreetNumber">
+                        </div>
+                        <div class="col-sm-5">
+                            <span id="stNumber-input-valid-message" asp-validation-for="ActiveEvent.Address.StreetNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-2"><label class="lablesForm required-label">Street Name:</label></div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="on-site-input2" asp-for="ActiveEvent.Address.StreetName">
+                        </div>
+                        <div class="col-sm-5">
+                            <span id="stName-input-valid-message" asp-validation-for="ActiveEvent.Address.StreetName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-2"><label class="lablesForm required-label">City:</label></div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="on-site-input3" asp-for="ActiveEvent.Address.City">
+                        </div>
+                        <div class="col-sm-5">
+                            <span id="stName-input-valid-message" asp-validation-for="ActiveEvent.Address.City" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-2"><label class="lablesForm required-label">Province:</label></div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="on-site-input4" asp-for="ActiveEvent.Address.Province">
+                        </div>
+                        <div class="col-sm-5">
+                            <span id="stName-input-valid-message" asp-validation-for="ActiveEvent.Address.Province" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-2"><label class="lablesForm required-label">Country:</label></div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="on-site-input5" asp-for="ActiveEvent.Address.Country">
+                        </div>
+                        <div class="col-sm-5">
+                            <span id="stName-input-valid-message" asp-validation-for="ActiveEvent.Address.Country" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!------form-group------->
+                    <div class="form-group row" style="margin-bottom:15px;">
+                        <div class="col-sm-2"><label class="lablesForm required-label">Postal Code:</label></div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="on-site-input6" asp-for="ActiveEvent.Address.PostalCode">
+                        </div>
+                        <div class="col-sm-5">
+                            <span id="stName-input-valid-message" asp-validation-for="ActiveEvent.Address.PostalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div>
+                <div class=" flex-row d-flex justify-content-end">
+                    <button type="submit" class=" pageForm btn btn-custom btn-lg">Add</button>
+                    <a asp-controller="Event" asp-action="GetAllEvents" class=" pageForm btn-outline-dark btn btn-lg">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    // Get references to the radio buttons and input fields
+    const onSiteRadio = document.getElementById('evType-On-Site');
+    const virtualRadio = document.getElementById('evType-Virtual');
+    const virtualInput = document.getElementById('virtual-input');
+    const eventLinkDiv = document.getElementById('eventLinkDiv');
+    const addressDiv = document.getElementById('addressDiv');
+    const addressInputs = document.querySelectorAll('#addressDiv input');
+
+    if (onSiteRadio.checked) {
+
+        virtualInput.value = ''; // Clear virtual input
+        virtualInput.disabled = true;
+        virtualInput.required = false; //make it Not required
+        eventLinkDiv.hidden=true;
+
+        // Loop through and set each input
+        addressInputs.forEach(input => {
+            input.disabled = false;
+            input.required = true;
+        });
+
+        virtualInput.value = ''; // Clear virtual input
+        virtualInput.disabled = true;
+        virtualInput.required = false; //make it Not required
+        eventLinkDiv.hidden=true;
+    } 
+    else if (virtualRadio.checked) 
+    {
+        virtualInput.disabled = false; // Enable virtual input
+        virtualInput.required = true; // make it required
+
+        // Loop through and set each input
+         addressInputs.forEach(input => {
+            input.disabled = true;
+            input.required = false;
+            input.value = '';
+        });
+        
+        addressDiv.hidden=true;
+    }
+
+    // Function to handle radio button change
+    function handleRadioChange() {
+        if (onSiteRadio.checked) {
+
+            // Loop through and set each input 
+            addressInputs.forEach(input => {
+                input.disabled = false;
+                input.required = true;
+            });
+            
+            virtualInput.disabled = true; // Disable virtual input
+            virtualInput.required = false; //make it Not required
+            virtualInput.value = ''; // Clear virtual input
+            addressDiv.hidden=false;
+            eventLinkDiv.hidden=true;
+        } 
+        else if (virtualRadio.checked) 
+        {
+            virtualInput.disabled = false; // Enable virtual input
+            virtualInput.required = true; // make it required
+            
+            // Loop through and set each input 
+            addressInputs.forEach(input => {
+                input.disabled = true;
+                input.required = false;
+                input.value = ''; 
+            });
+           
+            addressDiv.hidden=true;
+            eventLinkDiv.hidden=false;
+        }
+    }
+
+    // Add event listeners to radio buttons
+    onSiteRadio.addEventListener('change', handleRadioChange);
+    virtualRadio.addEventListener('change', handleRadioChange);
+
+</script>
+

@@ -1,0 +1,40 @@
+﻿@model List<OrderItem>
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Games" asp-action="OrdersToFulfill">Orders</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Order Items</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="cart-container">
+    <h3 style="margin-bottom:25px;">Order #@ViewBag.OrderNumber</h3>
+    <!----------------table------------->
+    <div class="d-flex flex-row bd-highlight mb-3">
+        <table class="table table-bordered table-striped itemsPage">
+            <thead>
+                <tr>
+                    <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:100px">Game ID</th>
+                    <th class="tableHheader" style="background-color:rgb(80, 140, 155); ">Game Name</th>
+                    <th class="tableHheader" style="background-color:rgb(80, 140, 155); width:100px">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="itemsPage">@item.GameId</td>
+                        <td class="itemsPage"> @item.Game.GameName</td>
+                        <td class="itemsPage"> @item.Quantity</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <a asp-controller="Games" asp-action="FulfillOrder" asp-route-id="@ViewBag.OrderNumber" role="button" class="btnFulfill">FulFill the order</a>
+
+</div>

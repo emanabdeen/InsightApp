@@ -1,0 +1,128 @@
+﻿@model ProfileViewModel
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+
+<div class="d-inline-flex p-2 bd-highlight flex-column justify-content-start">
+    <h7 class="myHeader">Conestoga Virtual Game Store</h7>
+
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Profile</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="ProfileContainer">
+    <!-- Tab Navigation -->
+    <div class="tabs col-2">
+        <div class="tab active" data-target="profileTab">Profile</div>
+        <div class="tab" data-target="addressTab">Address</div>
+        <div class="tab" data-target="preferencesTab">Prefrences</div>
+        <div class="tab" data-target="passwordTab">Change Password</div>
+    </div>
+
+    <!-- Tab Contents -->
+    <div id="profileTab" class="content active col-10">
+        <div class=" pageBody container-xl  mt-4">
+            <!-- Profile Details-->
+            <div class="card mb-4">
+                <div class="card-header">Profile</div>
+                <div class="card-body">
+                    <!-------Profile view component---------->
+                    <vc:member-profile member-id="@Model.ActiveMember.MemberId" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addressTab" class="content col-10">
+        <div class=" pageBody container-xl  mt-4">
+            <!-- Address card-->
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Address</div>
+                <div class="card-body">
+                    <!-------Addresses view component---------->
+                    <vc:member-addresses member-id="@Model.ActiveMember.MemberId" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="preferencesTab" class="content col-10">
+        <div class=" pageBody container-xl  mt-4">
+            <!-- Address card-->
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Preferences</div>
+                <div class="card-body">
+                    <!-------Preferences view component---------->
+                    <vc:member-preferences member-id="@Model.ActiveMember.MemberId" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="passwordTab" class="content col-10">
+        <div class=" pageBody container-xl  mt-4">
+            <!-- Password card-->
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Preferences</div>
+                <div class="card-body">
+                    <!-------Password view component---------->
+                    <vc:member-password member-id="@Model.ActiveMember.MemberId" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to activate a tab based on the target
+    function activateTab(targetTab, targetContent) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        targetTab.classList.add('active');
+        targetContent.classList.add('active');
+    }
+
+    // Handle click events on tabs
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const targetId = tab.getAttribute('data-target');
+            const targetContent = document.getElementById(targetId);
+
+            if (targetContent) {
+                activateTab(tab, targetContent);
+
+                // Update the URL without reloading the page
+                const url = new URL(window.location);
+                url.searchParams.set('activeTab', targetId.replace('tab', '')); // Store the tab number in URL
+                window.history.pushState({}, '', url);
+            }
+        });
+    });
+
+    // On page load, check if there is an activeTab value in the query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeTab = urlParams.get('activeTab');
+
+    if (activeTab) {
+        const targetTab = document.querySelector(`.tab[data-target='${activeTab}']`);
+        const targetContent = document.getElementById(activeTab);
+
+        if (targetTab && targetContent) {
+            activateTab(targetTab, targetContent);
+        }
+    }
+</script>
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+﻿@model List<ReviewViewModel>
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Reviews</li>
+        </ol>
+    </nav>
+</div>
+<div class="cart-container">
+    <h3>Pending Reviews</h3>
+
+    @if (Model == null || !Model.Any())
+    {
+        <!-- Show message when reviews is empty -->
+        <div class="empty-cart row">
+            <div>
+                <img src="~/Imgs/empty.jpg" alt="No pending reviews">
+            </div>
+            <hr />
+            <h5>No Pending Reviews</h5>
+        </div>
+    }
+    else
+    {
+
+        <!----------------table------------->
+        <div class="d-flex flex-row bd-highlight mb-3">
+            <table class="table table-bordered table-striped itemsPage" style="vertical-align: middle;">
+                <thead>
+                    <tr>
+                        <th class="tableHheader" style="background-color:rgb(160, 50, 85); width:100px">Game</th>
+                        <th class="tableHheader" style="background-color:rgb(160, 50, 85); width:100px">Username</th>
+                        <th class="tableHheader" style="background-color:rgb(160, 50, 85); width:200px">Review</th>
+                        <th class="tableHheader" style="background-color:rgb(160, 50, 85); width:50px">Status</th>
+                        <th class="tableHheader" style="background-color:rgb(160, 50, 85); width:100px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr style="height:60px; align-content:center;">
+                            <td class="itemsPage">@r.GameName</td>
+                            <td class="itemsPage">@r.ReviewedBy</td>
+                            <td class="itemsPage">
+                                @if (r.ReviewBody.Length > 50)
+                                {
+                                    @(r.ReviewBody.Substring(0, 50) + "...")
+                                }
+                                else
+                                {
+                                    @r.ReviewBody
+                                }
+                            </td>
+                            <td class="itemsPage"> <span class="badge bg-warning text-dark rounded-pill p-2">@r.StatusName</span></td>
+                            <td class="itemsPage">
+                                <a asp-controller="Games" asp-action="ViewReview" asp-route-id="@r.ReviewId" style="margin-right:20px; padding-left:20px;padding-right:20px;" role="button" class="btn btn-primary">View</a>
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+</div>

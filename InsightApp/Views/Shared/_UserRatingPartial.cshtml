@@ -1,0 +1,22 @@
+﻿@model double // Accept the average rating as the model
+
+<div class="ratingProductDetails">
+<span style="color:gold; font-size:18px;" id="game-rating">
+        @for (int i = 1; i <= 5; i++)
+        {
+            if (i <= (int)Model)
+            {
+                <i class="bi bi-star-fill star-full"></i> <!-- Full star with color -->
+            }
+            else if (i == Math.Ceiling(Model) && Model % 1 != 0)
+            {
+                <i class="bi bi-star-half star-half"></i> <!-- Half star with color -->
+            }
+            else
+            {
+                <i class="bi bi-star star-empty"></i> <!-- Empty star with color -->
+            }
+        }
+    </span>
+
+</div>

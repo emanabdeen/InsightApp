@@ -1,0 +1,94 @@
+﻿@model GamesListModel
+@{
+    ViewBag.Title = "Search Events";
+    ViewBag.SearchText = "";
+}
+
+<div class="d-inline-flex p-2 bd-highlight flex-column justify-content-start">
+    <h7 class="myHeader">Conestoga Virtual Game Store - Admin Panel</h7>
+
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Games</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="pageBody">
+
+    <!------Title------------->
+    <div class="d-flex justify-content-center" style="margin-top:10px">
+        <h2 class="pageTitle" style="color:#50C878;">Games</h2>
+    </div>
+
+    <!------Search bar & Add new Game Button---->
+
+    <div class="d-flex align-items-center justify-content-between flex-row">
+        <!----Search Form----->
+        <form class="col-sm-7" asp-controller="Games" asp-action="List" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for game" asp-for="@Model.SearchText">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit">
+                        <a style="color: white;"><i class="bi bi-search"></i></a>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!------Add new Game Button---->
+        <div class="col-lg-4 d-flex justify-content-end ">
+            <a asp-controller="Games" asp-action="AddNewGame" role="button" class=" btn btn-outline-dark btn-xlg AddNewButton">Add New Game</a>
+        </div>
+    </div>
+
+    <!----------------table------------->
+    <div class="d-flex flex-row bd-highlight mb-3">
+        <table class="table table-bordered table-striped itemsPage">
+            <thead>
+                <tr>
+                    <th class="tableHheader" style="background-color:#50C878; width:500px">Name</th>
+                    <th class="tableHheader" style="background-color:#50C878; width:150px">Category</th>
+                    <th class="tableHheader" style="background-color:#50C878; width:150px">Price</th>
+                    <th class="tableHheader" style="background-color:#50C878; width:200px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var g in Model.GamesList)
+                {
+                    <tr>
+                        <td> <a asp-controller="Games" asp-action="Details" asp-route-id="@g.GameId">@g.GameName</a></td>
+                        <td class="itemsPage"> @g.Categories[0]</td>
+                        <td class="itemsPage"> 
+                            @(g.GamePrice.HasValue && g.GamePrice.Value > 0 ? $"${g.GamePrice.Value:F2}" : "FREE")
+                        </td>
+                        <td class="itemsPage">
+                            <a asp-controller="Games" asp-action="ViewEditGame" asp-route-id="@g.GameId" class="btn btn-primary">Edit</a>
+                            <span class="mx-1">|</span>
+                            <form asp-action="Delete" asp-route-id="@g.GameId" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger delete-link" data-name="@g.GameName">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.delete-link').on('click', function (e) {
+            var gameName = $(this).data('name');  // Get the game name from data attribute
+            var result = confirm('Are you sure you want to delete (' + gameName + ')?');
+            if (!result) {
+                e.preventDefault(); // Prevents the delete action if user clicks 'Cancel'
+            }
+        });
+    });
+</script>
+

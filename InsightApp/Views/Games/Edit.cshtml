@@ -1,0 +1,174 @@
+﻿@model InsightApp.Models.EditGameViewModel
+
+<div class="d-inline-flex p-2 bd-highlight flex-column justify-content-start">
+    <h7 class="myHeader">Conestoga Virtual Game Store - Admin Panel</h7>
+
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Games" asp-action="List">Games</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@(Model.Game.GameId == 0 ? "Add New Game" : "Edit Game")</li>
+        </ol>
+    </nav>
+</div>
+<div class="pageBody">
+    <!-----------------------page title------------------------------->
+    <div style="margin-top:15px">
+        <h2 class="myHeader" style="text-align:center;">@(Model.Game.GameId == 0 ? "Add New Game" : "Edit Game")</h2>
+    </div>
+
+    <!-----------------------form------------------------------->
+    <div class="formFrame">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="SaveEditGame" method="post" enctype="multipart/form-data">
+
+            <!-- Game Name -->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm required-label">Game Name:</label></div>
+                <div class="col-sm-7">
+                    <input type="text" asp-for="Game.GameName" class="form-control" />
+                </div>
+                <div class="col-sm-3">
+                    <span asp-validation-for="Game.GameName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Details -->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm required-label">Game Details:</label></div>
+                <div class="col-sm-7">
+                    <textarea maxlength="500" asp-for="Game.Details" class="form-control"></textarea>
+                </div>
+                <div class="col-sm-3">
+                    <span asp-validation-for="Game.Details" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Price -->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2"><label class="lablesForm">Price:</label></div>
+                <div class="col-sm-5">
+                    <input type="number" asp-for="Game.Price" class="form-control" step="0.01" min="0" />
+                </div>
+                <div class="col-sm-5">
+                    <span asp-validation-for="Game.Price" class="text-danger"></span>
+
+                     <span style="font-size:small;" class="text-danger">(Price being null or 0 saves game as free)</span>
+                </div>
+            </div>
+
+            <!-- Display the current image -->
+            @if (Model.Game.GameId != 0)
+            {
+                <div class="form-group row" style="margin-bottom:15px;">
+                    <div class="col-sm-2">
+                        <label class="lablesForm">Current Game Image:</label>
+                    </div>
+                    <div class="col-sm-5">
+                        @if (!string.IsNullOrEmpty(Model.Game.GameImageLink))
+                        {
+                            <img src="@Url.Content(Model.Game.GameImageLink)" alt="Game Image" style="width: 100px; height: auto;" />
+                        }
+                        else
+                        {
+                            <p class="text-danger">No image uploaded</p>
+                        }
+                    </div>
+            </div>
+            }
+
+            <!-- Image Upload Button -->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <div class="col-sm-2">
+                    <label class="lablesForm">@ViewBag.ImageExists Game Image:</label>
+                </div>
+                <div class="col-sm-7">
+                    <input type="file" name="GameImage" class="form-control" accept=".jpg, .jpeg, .png" />
+                    <span class="text-danger">@ViewBag.ImageError</span>
+                    <input type="hidden" asp-for="Game.GameImageLink" />
+                </div>
+            </div>
+            
+
+            <!-- Categories, Languages, and Platforms in a row -->
+            <div class="form-group row" style="margin-bottom:15px;">
+                <!-- Categories Column -->
+                <div class="col-sm-4">
+                    <label class="lablesForm required-label">Categories:</label>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="SelectedCategoryIds" value="@category.CategoryId"
+                            @(Model.SelectedCategoryIds.Contains(category.CategoryId) ? "checked" : "") />
+                            <label class="form-check-label">@category.CategoryName</label>
+                        </div>
+                    }
+                    <span asp-validation-for="SelectedCategoryIds" class="text-danger"></span>
+                </div>
+
+                <!-- Languages Column -->
+                <div class="col-sm-4">
+                    <label class="lablesForm required-label">Languages:</label>
+                    @foreach (var language in Model.Languages)
+                    {
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="SelectedLanguageIds" value="@language.LanguageId"
+                            @(Model.SelectedLanguageIds.Contains(language.LanguageId) ? "checked" : "") />
+                            <label class="form-check-label">@language.LanguageName</label>
+                        </div>
+                    }
+                    <span asp-validation-for="SelectedLanguageIds" class="text-danger"></span>
+                </div>
+
+                <!-- Platforms Column -->
+                <div class="col-sm-4">
+                    <label class="lablesForm required-label">Platforms:</label>
+                    @foreach (var platform in Model.Platforms)
+                    {
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="SelectedPlatformIds" value="@platform.PlatformId"
+                            @(Model.SelectedPlatformIds.Contains(platform.PlatformId) ? "checked" : "") />
+                            <label class="form-check-label">@platform.PlatformName</label>
+                        </div>
+                    }
+                    <span asp-validation-for="SelectedPlatformIds" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Physical Copy Availability -->
+            <div class="form-group row" style="margin-bottom:30px; margin-top:30px;">
+                <div class="col-sm-2">
+                    <label class="lablesForm">Physical Copy Available:</label>
+                </div>
+                <div class="col-sm-10">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="physicalAvailableYes" name="Game.PhysicalAvailable" value="true"
+                        @(Model.IsPhysicalAvailableYesChecked ? "checked" : "") />
+                        <label class="form-check-label" for="physicalAvailableYes">Yes</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="physicalAvailableNo" name="Game.PhysicalAvailable" value="false"
+                        @(Model.IsPhysicalAvailableNoChecked ? "checked" : "") />
+                        <label class="form-check-label" for="physicalAvailableNo">No</label>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <span asp-validation-for="Game.PhysicalAvailable" class="text-danger"></span>
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="Game.GameId" />
+            <input type="hidden" asp-for="Game.IsDeleted" value="false" />
+
+            <!---------------------Buttons------------------------------>
+            <div class="form-group row">
+                <div class="col-sm-12 d-flex justify-content-center">
+                    <button type="submit" class="pageFormGame btn btn-custom btn-lg" >@ViewBag.Title</button>
+                    <a asp-controller="Games" asp-action="List" class="pageFormGame btn-outline-dark btn btn-lg" style="margin-left:10px;">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

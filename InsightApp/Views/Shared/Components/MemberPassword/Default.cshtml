@@ -1,0 +1,45 @@
+﻿@using InsightApp.Entities
+@model MemberPasswordViewModel
+@inject InsightUpdateCvgs2Context dbContext
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<div class="card-body">
+    <form asp-controller="Member" asp-action="EditAccountPassword" method="post" enctype="application/x-www-form-urlencoded">
+        
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-8">
+                    <label class="small mb-1 required-label" for="oldPassword">Old Password</label>
+                    <input asp-for="OldPassword" class="form-control" id="oldPassword" style="background-color:lightgrey;" autocomplete="current-password" aria-required="true" placeholder="Please enter your old password." />
+                    <span asp-validation-for="OldPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-8">
+                <label class="small mb-1 required-label" for="newPassword">New Password</label>
+                    <input asp-for="NewPassword" class="form-control" id="newPassword" style="background-color:lightgrey;" autocomplete="new-password" aria-required="true" placeholder="Please enter your new password." />
+                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-8">
+                <label class="small mb-1 required-label" for="confirmPassword">Confirm New Password</label>
+                    <input asp-for="ConfirmPassword" class="form-control" id="confirmPassword" style="background-color:lightgrey;" autocomplete="new-password" aria-required="true" placeholder="Please confirm your new password." />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div>
+                <div class=" flex-row d-flex ">
+                <button type="submit" class=" viewComponent btn btn-custom btn-lg">Update password</button>
+                </div>
+            </div>
+        <input type="hidden" asp-for="AccountId" value="@Model.AccountId.ToString()" /> @*to return the id with the object*@
+        <input type="hidden" asp-for="MemberId" value="@Model.MemberId.ToString()" /> @*to return the id with the object*@
+
+    </form>
+</div>

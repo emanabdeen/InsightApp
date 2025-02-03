@@ -1,0 +1,51 @@
+﻿@model List<OrderItem>
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="Orders">Orders</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Order Items</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="wishlist-container">
+    <h3 style="margin-bottom:25px; text-align:start;">Order #@ViewBag.OrderNumber</h3>
+    @foreach (var item in Model)
+    {
+        <!-- Example of product item -->
+        <div class="myGames-item">
+            <div class="product-info ">
+                <img src="@Url.Content(item.Game.GameImageLink)" alt="Game Cover Image">
+                <h2 style="margin-right:30px;">@item.Game.GameName</h2>
+                @if (item.IsPhysical == 0)
+                {
+                    <p style="font-size: 1rem;color: #28a745;margin: 5px 0;"> (Digital Copy)</p>
+                }
+                else
+                {
+                    <p style="font-size: 1rem;color: #28a745;margin: 5px 0;"> (Physical Item)</p>
+                }
+            </div>
+
+            <div>
+                @if (item.IsPhysical == 0) @*the download button will show only for physical items*@
+                {
+                    <a id="downloadButton" asp-controller="Member" asp-action="DownloadGame" asp-route-gameId="@item.GameId" role="button" class="add-cart">
+                        Download <i class="bi bi-download"></i>
+                    </a>
+                }
+                <a asp="Member" asp-action="SubmitReview" asp-route-id="@item.GameId" role="button" class="add-cart" style="margin-left:30px;">
+                    Add Review
+                </a>
+                <a asp-controller="Product" asp-action="details" asp-route-id="@item.GameId" role="button" class="add-cart" style="margin-left:30px;">
+                    Rate the game
+                </a>
+            </div>
+
+        </div>
+    }
+
+</div>

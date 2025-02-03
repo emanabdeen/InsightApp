@@ -1,0 +1,67 @@
+@model List<FriendViewModel>;
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Friends</li>
+        </ol>
+    </nav>
+</div>
+
+
+<div class="pageBody">
+
+    <div>
+        <a asp-controller="Member" asp-action="SearchFriend" class="btn btn-secondary">
+            Add Friend
+        </a>
+    </div>
+
+
+    <div style="margin-top: 20px;">
+    @if (!Model.Any() || Model == null)
+    {
+        <div>
+            <hr>
+            <h5>You have not added Friends yet</h5>
+            
+        </div>
+
+    }else{
+        <div>
+            <div class="card">
+                <ul class="list-group list-group-flush">
+
+                    @foreach(var friend in Model){
+
+                        <li class="list-group-item" >
+                            <div class="friend-parent">
+                                <span class="friend-label">
+                                          
+                                        @friend.UserName
+                                </span>
+
+                                <span style="margin:8px">
+                                    <a class="friend-wish-list" asp-controller="Member" asp-action="GetFriendWishList" asp-route-friendId="@friend.FriendId" > 
+                                        View Wish List
+                                    </a>
+                                </span>
+
+                                <span class=friend-btn-far-right>
+                                    <form asp-controller="Member" asp-action="RemoveFriend" asp-route-friendId="@friend.FriendId" method="post" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger">Remove</button>
+                                    </form>
+                                </span>
+                            </div>
+                          
+                        </li>  
+                    }
+                </ul>
+            </div>
+        </div>
+
+    }
+     </div>
+</div>

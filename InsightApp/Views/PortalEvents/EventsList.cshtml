@@ -1,0 +1,52 @@
+﻿@model EventListModel
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Events</li>
+        </ol>
+    </nav>
+</div>
+<!------Search bar & Add new Game Button---->
+<!----Search Form----->
+<form class="col-sm-7" asp-controller="PortalEvents" asp-action="GetEvents" method="post" enctype="application/x-www-form-urlencoded">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for event" asp-for="@Model.SearchText">
+        <div class="input-group-append">
+            <button class="btn btn-secondary" type="submit">
+                <a style="color: white;"><i class="bi bi-search"></i></a>
+            </button>
+        </div>
+    </div>
+</form>
+
+
+<div class="evContainer">
+    @foreach (var e in Model.EventList)
+    {
+        <a asp-controller="PortalEvents" asp-action="GetEventById" asp-route-id="@e.EventId" style="text-decoration:none;">
+            <div class="card mb-3" style="max-width: 750px; border:none;">
+                <div class="row g-0">
+                    <div class="container-11 col-md-3">
+                        <p>@e.StartDate.ToString("MMMM").ToUpper()</p>
+                        <p style="font-size:40px;">@e.StartDate.ToString("dd").ToUpper()</p>
+                        <p>@e.StartDate.ToString("yyyy").ToUpper()</p>
+                    </div>
+                    <div class="col-md-8 d-flex row align-content-center">
+                        <div>
+                            <h4 class="card-title" style="align-self:center; color:rgb(80, 140, 155);">@e.EventName</h4>
+                        </div>
+                        <div class="col-12">
+                            <h6 class="container-1h6" style="align-self:center;">@e.EvType.EvTypeName</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <hr />
+
+    }
+</div>
+

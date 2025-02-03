@@ -1,0 +1,976 @@
+﻿.game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.game-header img {
+    width: 500px;
+    height: auto;
+}
+
+.game-header .game-info {
+    max-width: 70%;
+}
+
+.game-title {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.game-description {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #555;
+}
+
+.ratingProductDetails {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row; /* flex-row */
+    align-items: center;
+}
+
+    .actions button {
+        padding: 10px 20px;
+        margin-right: 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+
+/* Button styling */
+.add-cart {
+    background-color: rgb(80, 140, 155);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    text-align:center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 200px;
+    height: 40px;
+}
+
+.add-favorite {
+    background-color: #ffc107;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+}
+
+.add-cart:hover, .add-favorite:hover {
+    opacity: 0.8;
+}
+
+
+
+/*==========Game Details page=========*/
+.game-image {
+    align-self: start;
+    max-width: 15%;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 10px 50px 0px;
+    margin-right: 50px;
+}
+
+.gameHeader {
+    display: flex; /* d-flex */
+    flex-direction: row; /* flex-row */
+    justify-content: start; /* justify-content-between */
+    align-items: center; /* align-items-center */
+}
+
+.breadcrumbsPortal {
+    display: inline-flex; /* d-inline-flex */
+    flex-direction: column; /* flex-column */
+    justify-content: flex-start; /* justify-content-start */
+    margin-bottom: 20px;
+}
+
+.gameDetails {
+    align-self: start;
+    display: flex; /* d-flex */
+    flex-direction: column; /* flex-row */
+}
+
+.gameSpecifications{
+    margin-top:20px;
+}
+
+.recommendedGames {
+    margin-top: 20px;
+    margin-right: 50px;
+    display: flex; /* d-flex */
+    flex-direction: column; /* flex-column */
+    justify-content: start; /* justify-content-between */
+    align-items: start; /* align-items-center */
+    
+}
+
+.scroll-container {
+    display: flex; /* Enables flexbox layout */
+    overflow-x: auto; /* Allows horizontal scrolling */
+    white-space: nowrap; /* Prevents wrapping of items to the next line */
+    padding: 15px;
+    gap: 15px; /* Adds space between images */
+    margin-top: 30px;
+    margin-left: 30px;
+    width: 70vw; /* Set width to 70% of the viewport width */
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 50px 0px;
+    box-sizing: border-box; /* Includes padding in width calculation */
+}
+
+.game-card {
+    display: flex;
+    flex-direction: column; /* Stack image and tags vertically */
+    align-items: center; /* Center-align content */
+    gap: 10px; /* Space between image and tags */
+    width: 150px;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.scroll-container img {
+    width: 150px; /* Fixed width for consistent sizing */
+    height: 200px; /* Fixed height for uniform appearance */
+    border: 2px solid #ccc;
+    border-radius: 5px; /* Optional: Adds rounded corners */
+    object-fit: cover; /* Ensures proper scaling and cropping */
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap; /* Allows tags to wrap if necessary */
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.tag {
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.imagesContainer {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-right: 50px;
+    display: flex; /* d-flex */
+    flex-direction: column; /* flex-column */
+    justify-content: start; /* justify-content-between */
+    align-items: start; /* align-items-center */
+}
+
+.star-full {
+    color: gold;
+}
+
+.star-half {
+    color: gold;
+}
+
+.star-empty {
+    color: lightgray;
+}
+/*==================Products list========================*/
+/* Container for the grid */
+.productsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid layout */
+    gap: 50px; /* Space between cards */
+    padding-top: 30px;
+}
+
+/* Card styling */
+.cardProducts {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .cardProducts:hover {
+        transform: translateY(-5px); /* Slight lift effect on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Image inside the card */
+    .cardProducts img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+/* Content inside the card */
+.card-content {
+    padding: 15px;
+    text-align: center;
+    display: flex; /* d-flex */
+    flex-direction: row; /* flex-column */
+    justify-content: space-between; /* justify-content-between */
+    align-items: center; /* align-items-center */
+}
+
+.cardProducts h3 {
+    margin: 10px 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.cardProducts p {
+    color: #777;
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+/* Button styling */
+.btnView {
+    background-color: rgb(80, 140, 155);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    text-decoration:none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 80px;
+    height:40px;
+}
+
+    .btnView:hover {
+        background-color: goldenrod;
+    }
+
+
+/*=====================Cart============================*/
+
+/* Cart container */
+.cart-container {
+    max-width: 90%;
+    min-width: 850px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+    /* Cart title */
+    .cart-container h3 {
+        text-align: center;
+        margin-bottom: 30px;
+        
+    }
+
+.empty-cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 80px;
+    overflow: hidden; /* prevents overflow if the image is larger */
+}
+    .empty-cart h5 {
+        margin-top: 10px;
+        
+        font-style: italic;
+    }
+    .empty-cart img {
+        width: 25%;
+    }
+
+/* Cart items section */
+.cart-items {
+    margin-bottom: 10px;
+
+}
+
+/* Cart item layout */
+.cart-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+    .cart-item img {
+        width: 100px;
+        height: auto;
+        border-radius: 8px;
+        margin-right: 20px;
+    }
+
+/* Item details */
+.item-details {
+    flex-grow:0.5;
+}
+
+    .item-details h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #333;
+    }
+
+.price {
+    font-size: 1.2rem;
+    color: #28a745; /* Green for price */
+    margin: 5px 0;
+}
+
+
+/* Remove button */
+.remove-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 1rem;
+    text-decoration:none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .remove-btn:hover {
+        background-color: #c82333;
+    }
+
+/* Cart summary section */
+.cart-summary {
+    text-align: right;
+}
+
+
+    .cart-summary p {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+#total-price {
+    font-weight: bold;
+}
+
+
+/*=======================Check out====================================*/
+
+/* Checkout container */
+.checkout-container {
+    display: flex; /* d-flex */
+    flex-direction: row; /* flex-column */
+    justify-content: space-between; /* justify-content-between */
+    align-items: start; /* align-items-center */
+    align-items: stretch;
+}
+  
+
+/* Form inputs */
+.side label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size:13px;
+}
+
+.side input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 0.5px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Summary section */
+.summaryCheckout {
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    display: flex; /* d-flex */
+    flex-direction: row; /* flex-column */
+    justify-content: space-between; /* justify-content-between */
+    align-items: center; /* align-items-center */
+    align-items: center;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.summary-total {
+    font-weight: bold;
+    /*text-align: right;*/
+    margin-top: 10px;
+}
+
+/* Checkout button */
+.checkout-btn2 {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 50%;
+    transition: background-color 0.3s ease;
+}
+
+    .checkout-btn2:hover {
+        background-color: goldenrod;
+    }
+
+.nextButton {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    text-align:center;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 15%;
+    transition: background-color 0.3s ease;
+}
+
+.side {
+    border: solid;
+    border-color: lightgrey;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+}
+    .side h6 {
+        margin-bottom: 15px;
+        background-color:rgb(0, 0, 0, 0.1);
+        padding:8px;
+    }
+
+/*=====================Wish list============================*/
+
+.wishlist-container {
+    max-width: 90%;
+    min-width:75%;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.product-item {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+    .product-item:last-child {
+        border-bottom: none;
+    }
+
+.product-info {
+    display: flex;
+    align-items: center;
+}
+
+    .product-info img {
+        width: 70px;
+        height: auto;
+        border-radius: 8px;
+        margin-right: 20px;
+    }
+
+    .product-info h2 {
+        font-size: 18px;
+        margin: 0;
+        color: #333;
+    }
+
+
+.cart-btn {
+    background-color: rgb(80,140,155);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .cart-btn:hover {
+        background-color: goldenrod;
+    }
+
+.trash-icon {
+    font-size: 20px; 
+    color:black;
+}
+
+/*==============================My Games==========================================*/
+.myGames-item {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    padding: 30px;
+    border-bottom: 1px solid #ccc;
+}
+
+    .myGames-item:last-child {
+        border-bottom: none;
+    }
+.myGames-itemButtons {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 30px;
+    border-bottom: 1px solid #ccc;
+}
+
+.myGames-btn {
+    width:180px;
+    background-color: rgb(80,140,155);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .myGames-btn:hover {
+        background-color:goldenrod;
+    }
+
+.MyProduct-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.MyProduct h1 {
+    text-align: center;
+    color: #333;
+}
+
+.MyProduct-info {
+    text-align: center;
+}
+
+.MyProduct-info img {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+}
+
+    .MyProduct-info h2 {
+        font-size: 24px;
+        margin: 10px 0;
+    }
+
+.rating {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top:5px;
+}
+
+    .rating input {
+        display: none;
+    }
+
+    .rating label {
+        font-size: 30px;
+        color: #ccc;
+        cursor: pointer;
+    }
+
+    .rating input:checked ~ label {
+        color: gold;
+    }
+
+    .rating label:hover,
+    .rating label:hover ~ label {
+        color: gold;
+    }
+
+/* Inverse order for stars */
+.rating {
+    flex-direction: row-reverse;
+}
+
+.review-form {
+    margin-top: 20px;
+}
+
+    .review-form textarea {
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        resize: none;
+        margin-bottom:10px;
+    }
+
+.reviewSubmit-btn {
+    background-color: rgb(80,140,155);
+    color: #fff;
+    font-weight:bolder;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    width: 200px;
+    box-shadow: 0 6px 12px rgb(117, 117, 113);
+}
+
+    .reviewSubmit-btn:hover {
+        background-color: goldenrod;
+    }
+
+
+/*==================profile========================*/
+.ProfileContainer {
+    display: flex;
+    flex-direction: row;
+
+}
+.tabs {
+    display: flex;
+    cursor: pointer;
+    flex-direction: column;
+    margin-top: 25px;
+}
+
+.tab {
+    padding: 10px 20px;
+    background-color: #f1f1f1;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+    .tab.active {
+        background-color: rgb(80,140,155);
+        color: white;
+    }
+
+.content {
+    display: none;
+}
+
+    .content.active {
+        display: block;
+    }
+
+/*==================prefrences========================*/
+.prefrencesColumn {
+    padding: 15px;
+    background-color:#ddd;
+    border-radius:8px;
+}
+    .prefrencesColumn h5 {
+        text-decoration: underline;
+        font-style: italic;
+    }
+    .PrefrencesContainer {
+        display: flex;
+        flex-direction: row;
+    }
+
+/*==================order success========================*/
+.successContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.image-container {
+    overflow: hidden; /* prevents overflow if the image is larger */
+    display: flex;
+    justify-content: center; 
+}
+    .image-container img {
+        width: 50%;
+    }
+
+.btnCont {
+    background-color: rgb(80, 140, 155);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    margin-top:30px;
+
+}
+.btnCont:hover {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 10px 20px 0px;
+    }
+
+/*==================order Admin Panel========================*/
+.btnFulfill {
+    background-color: rgb(80, 140, 155);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+    .btnFulfill:hover {
+        background-color: green;
+    }
+
+/*============Event portal================================*/
+
+.evContainer {
+    margin-top: 50px;
+}
+.container-11 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background-color:#ddd;
+    background-size: 100% 100%;
+    border-radius:10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    max-width:220px;
+}
+
+    .container-11 p {
+        color: black;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+        margin: 0px;
+    }
+
+.container-1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background: url(../Imgs/dateBackground.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+    .container-1 p {
+        color: white;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+        margin:0px;
+
+    }
+
+.formEventFrame {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 40px;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-bottom: 40px;
+    border: groove;
+    border-radius: 3px;
+    padding: 40px;
+    box-shadow: 33px -20px 37px -27px rgba(80,140,155,0.5);
+}
+
+.rightSideDetails {
+    display: flex;
+    flex-direction: column;
+    justify-items:center;
+    align-items:center;
+    padding: 10px;
+    margin-left: 10px;
+    /*border: groove;*/
+    /*box-shadow: 33px -20px 37px -27px rgba(80,140,155,0.5);*/
+    /*border-radius: 3px;*/
+}
+.leftSideDetails {
+    padding: 10px;
+
+}
+.btnRegister {
+    background-color: rgb(80, 140, 155);
+    color: white;
+    border: none;
+    /*padding-right:50px;
+    padding-left:50px;*/
+    padding: 15px 50px 15px 50px;
+    margin-top: 30px;
+    font-size: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    justify-self: center;
+}
+    .btnRegister:hover {
+        background-color: goldenrod;
+    }
+
+.container-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background: url(../Imgs/calenderBackground.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height:270px;
+    width:270px;
+}
+
+.container-2 p {
+    color: black;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+    margin: 0px;
+}
+
+#downloadButton {
+    background-color: white;
+    color: rgb(80, 140, 155);
+    border: solid;
+    border-color: rgb(80, 140, 155);
+    padding: 10px 15px;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    max-width: 150px;
+    width: auto;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+}
+
+#downloadButton i {
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+#downloadButton:hover {
+    color: white;
+    background-color: rgb(80, 140, 155);
+}
+
+
+/*=========== Friends =================*/
+.add-friend {
+    background-color: rgb(80, 140, 155);
+    color: #ffffff;
+    border: none;
+    padding: 10px 10px 10px 10px;
+    font-size: 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 120px;
+    height: auto;
+    transition: background-color 0.2s;
+    justify-self: center;
+  
+}
+        .add-friend:hover {
+            background-color: goldenrod;
+        }
+
+.friend-parent {
+    width: 100%;  /* The parent container will take full width */
+    position: relative;  /* To control positioning of the button */
+    display:flex;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+.friend-label{
+    flex: 4;
+}
+
+
+.friend-already-exist{
+    background-color: transparent;
+    border: 2px solid rgb(80, 140, 155);       
+    color: rgb(80, 140, 155);
+    padding: 5px 5px 5px 5px; 
+    font-size: 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    width: 150px;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.friend-wish-list {
+    background-color: rgb(80, 140, 155);
+    color: #ffffff;
+    border: none;
+    padding: 10px 10px 10px 10px;
+    font-size: 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 120px;
+    height: auto;
+    transition: background-color 0.2s;
+    justify-self: center;
+}

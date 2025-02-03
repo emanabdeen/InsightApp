@@ -1,0 +1,55 @@
+﻿@model List<GameEvent>
+
+<div class="breadcrumbsPortal">
+    <!-- Breadcrumb -->
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Events</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="evContainer" style="margin-top:0px; margin-bottom:30px;">
+    <h1>My Events</h1>
+
+    @if (!Model.Any() || Model == null)
+    {
+        <!-- Show message when no events are available -->
+        <div class="empty-cart row">
+            <div>
+                <img src="~/Imgs/empty.jpg" alt="No items">
+            </div>
+            <hr />
+            <h5>You are not registered for any event</h5>
+            <div style="align-self:center; margin-top:30px; margin-bottom:30px;">
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var ev in Model)
+        {
+            <a asp-controller="PortalEvents" asp-action="GetEventById" asp-route-id="@ev.EventId" asp-route-myEvent="@ViewBag.MyEvent" style="text-decoration:none;">
+                <div class="card mb-3" style="max-width: 750px; border:none;">
+                    <div class="row g-0">
+                        <div class="container-11 col-md-3">
+                            <p>@ev.StartDate.ToString("MMMM").ToUpper()</p>
+                            <p style="font-size:40px;">@ev.StartDate.ToString("dd").ToUpper()</p>
+                            <p>@ev.StartDate.ToString("yyyy").ToUpper()</p>
+                        </div>
+                        <div class="col-md-8 d-flex row align-content-center">
+                            <div>
+                                <h4 class="card-title" style="align-self:center; color:rgb(80, 140, 155);">@ev.EventName</h4>
+                            </div>
+                            <div class="col-12">
+                                <h6 class="container-1h6" style="align-self:center;">@ev.EvType.EvTypeName</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <hr />
+        }
+    }
+</div>

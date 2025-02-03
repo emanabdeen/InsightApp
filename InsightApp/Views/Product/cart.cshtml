@@ -1,0 +1,66 @@
+﻿@model List<CartItemsViewModel>
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="products">Game</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cart</li>
+        </ol>
+    </nav>
+</div>
+<div class="cart-container">
+    <h3>Your Shopping Cart</h3>
+
+    @if (Model == null || !Model.Any())
+    {
+        <!-- Show message when cart is empty -->
+        <div class="empty-cart row">
+
+            <div>
+                <img src="~/Imgs/emptyCart.jpg" alt="No items">
+            </div>
+            <hr />
+            <h5>Your cart is empty.</h5>
+            <div style="align-self:center; margin-top:30px; margin-bottom:30px;">
+                <a asp-controller="Product" asp-action="products" role="button" class="btnCont">Shop Now</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Cart Items -->
+        <div class="cart-items">
+            @foreach (var g in Model)
+            {
+                <div class="cart-item">
+                    <img src="@Url.Content(g.GameImageLink)" alt="Game Cover Image">
+                    <div class="item-details col-4">
+                        <h5>@g.GameName</h5>
+                        <p class="price">$ @g.Price</p>
+                    </div>
+                    <div class="col-4"> 
+                        @if (g.IsPhysical == 0)
+                        {
+                            <p class="price">Digital Copy</p>
+                        }
+                        else
+                        {
+                            <p class="price">Physical Item</p>
+                        }
+                    </div>
+                    <a role="button" class="remove-btn" asp-controller="Product" asp-action="RemoveCartItem" asp-route-id="@g.CartItemId">Remove</a>
+                </div>
+            }
+
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+            <p>Total: <span id="total-price">$@ViewBag.TotalItemsPrice</span></p>
+            <a asp-controller="Product" asp-action="CheckoutShippingAddress" role="button" class="btnView">Proceed to Checkout</a>
+        </div>
+    
+    }  
+</div>

@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Site2 = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - InsightApp</title>
+    
+    <link rel="stylesheet" type="text/css" href="~/css/portal.css">
+    <link rel="stylesheet" type="text/css" href="~/css/report.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/InsightApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+
+    <!-- Bootstrap Icons CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
+    
+
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid d-flex justify-content-between">
+                <div class="d-inline-flex flex-row align-items-center">
+                    <img src="~/Imgs/TeamLogo.png" alt="description of your image" class="header" style="margin-right: 20px">
+                    <a class="navbar-brand home-link" asp-area="" asp-controller="Home" asp-action="FirstPage" style="font-size: 1.4rem;"><i class="fa-solid fa-house"></i></a>
+                    
+
+                    
+                </div>
+                <div class ="d-inline-flex flex-row align-items-center">
+                    <div class="navbar-collapse collapse d-sm-inline-flex ">
+                        <!-- Right Icons and Links -->
+                        
+                        <div class="d-flex align-items-center">
+                            <!-- Icons Group -->
+                            <div class="icon-group d-flex align-items-center">
+
+                                
+                                <a id="shoppingIcon" class="navbar-brand" asp-controller="Product" asp-action="Cart"><span class="icon" style="margin-right:20px;">🛒</span></a>  <!-- Shopping Cart -->
+                                <a id="bagIcon" class="navbar-brand" asp-controller="Member" asp-action="Orders"><span id="boot-icon" class="bi bi-bag-check-fill" style="font-size: 25px; color: rgb(0, 128, 55); opacity: 1; margin-right:20px;"></span></a>  <!-- bag -->
+                                <a id="favIcon" class="navbar-brand" asp-controller="Member" asp-action="wishlist"><span class="icon">❤️</span></a>  <!-- Favorite -->
+                                <partial name="_LoginPartial" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+    @* Toast Notification for Success Message *@
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1050;">
+            <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @TempData["SuccessMessage"]
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            //Automatically show the toast after Bootstrap is loaded
+            document.addEventListener("DOMContentLoaded", function () {
+                var toastElement = document.getElementById('successToast');
+                if (toastElement) {
+                    var toast = new bootstrap.Toast(toastElement);
+                    toast.show();
+                }
+            });
+        </script>
+    }
+
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            <last-action-message />
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - InsightApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <!--hide the favIcon & shoppingIcon & bagIcon in AdminPanel-->
+    <script type="text/javascript">
+        // JavaScript to check if "AdminPanel" exists in the URL
+        if (window.location.href.includes("AdminPanel") || window.location.href.includes("Home") || window.location.href.includes("Account")) {
+            const favIcon = document.getElementById('favIcon');
+            const shoppingIcon = document.getElementById('shoppingIcon');
+            const bagIcon = document.getElementById('bagIcon');
+            favIcon.hidden = true;
+            shoppingIcon.hidden = true;
+            bagIcon.hidden = true;
+        }
+        // if (window.location.href.includes("AdminPanel")) {
+        //     const registerLink = document.getElementById('registerLink');
+        //     registerLink.hidden = true;
+        // }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

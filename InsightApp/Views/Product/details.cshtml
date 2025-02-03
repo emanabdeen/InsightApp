@@ -1,0 +1,334 @@
+﻿@model ProductDetailsViewModel
+@{
+
+    var languageColours = new Dictionary<string, string>
+{
+    { "English", "#D3D3D3" },
+    { "French", "#E6AEE6" },   
+    { "Spanish", "#FFE4B5" },  
+    { "German", "#D2B48C" },   
+    { "Italian", "#F4A460" },     
+    { "Japanese", "#B0C4DE" },    
+    { "Korean", "#87CEFA" },    
+    { "Portuguese", "#FFD700" },
+    { "Russian", "#BC8F8F" },    
+    { "Arabic", "#EABF12" }       
+};
+
+    var categoryColours = new Dictionary<string, string>
+{
+    { "Board", "#FFE4B5" },       
+    { "Adventure", "#FFA07A" },   
+    { "Fighting", "#CD5C5C" },    
+    { "Survival", "#FFCC99" },    
+    { "Racing", "#FFDAB9" },      
+    { "Horror", "#8B0000" },      
+    { "Platformer", "#D8BFD8" },  
+    { "Sports", "#98FB98" },      
+    { "Puzzle", "#E6E6FA" },      
+    { "Trivia", "#AFEEEE" }       
+};
+
+
+    var platformColours = new Dictionary<string, string>
+{
+    { "Nintendo Switch", "#FF6347" }, 
+    { "PC", "#B0E0E6" },               
+    { "PS2", "#6A5ACD" },             
+    { "PS3", "#4682B4" },             
+    { "PS4", "#4682B4" },             
+    { "PS5", "#1E90FF" },              
+    { "Wii U", "#AFEEEE" },            
+    { "Xbox 360", "#9ACD32" },         
+    { "Xbox One", "#32CD32" },         
+    { "Xbox Series X", "#289B08" }     
+};
+
+}
+
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Star Rating System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="~/css/rating.css" /> 
+    <link rel="stylesheet" href="~/css/recomendedGames.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery CDN -->
+</head>
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="products">Games</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.ActiveGame.GameName</li>
+        </ol>
+    </nav>
+</div>
+<body>
+    <div class="container">
+        <div class="gameHeader">
+            <!-- Game Image -->
+            <img src="@Url.Content(@Model.ActiveGame.GameImageLink)" alt="Game Cover Image" class="game-image">
+
+            <!-- Game Information -->
+            <div class="col-md-6 gameDetails">
+                <div>
+                    <div class="game-title"><span id="game-title">@Model.ActiveGame.GameName</span></div>
+                    <div class="game-description">
+                        <p id="game-description">@Model.ActiveGame.Details</p>
+                    </div>
+                    <!-- Game Rating -->
+                    <div id="rating-container">
+                        @await Html.PartialAsync("_GameRatingPartial", Model.AverageRating)
+                    </div>
+                    <a asp-controller="Member" asp-action="Reviews" asp-route-id="@Model.ActiveGame.GameId" style="font-size: 1.2rem;" >Reviews</a>
+
+                </div>  
+
+                <!-- Modal Structure -->
+                <div id="rateModal" class="modal hidden">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3 class="modal-header">YOUR RATING</h3>
+                        <p class="modal-title">@Model.ActiveGame.GameName</p>
+                        <div id="stars-container" class="stars-container">
+                            <!-- 5 Font Awesome stars for rating selection -->
+                            <i class="rating-star fa-regular fa-star" data-value="1"></i>
+                            <i class="rating-star fa-regular fa-star" data-value="2"></i>
+                            <i class="rating-star fa-regular fa-star" data-value="3"></i>
+                            <i class="rating-star fa-regular fa-star" data-value="4"></i>
+                            <i class="rating-star fa-regular fa-star" data-value="5"></i>
+                        </div>
+                        <button id="save-button" class="rate-button btn btn-primary" disabled>Rate</button>
+                    </div>
+                </div>
+
+                <div class="ratingProductDetails">
+                    @if (@Model.ActiveGame.Price == 0)
+                    {
+                        <p>Price: FREE</p>
+                    }
+                    else
+                    {
+                        <p>Price: $ @Model.ActiveGame.Price</p>
+                    }
+                </div>
+                @if (@Model.ActiveGame.Price == 0)
+                {
+                    <a asp-controller="Member" asp-action="DownloadGame" asp-route-gameId="@Model.ActiveGame.GameId" role="button" class="add-cart" style=" width: 310px;">
+                        Download <i class="bi bi-download"></i>
+                    </a>
+                    <a asp-controller="Member" asp-action="SubmitReview" asp-route-id="@Model.ActiveGame.GameId" role="button" class="add-cart" style="width: 310px; margin-top:20px;">
+                        Add Review
+                    </a>
+                }
+                else
+                {
+                    <div>
+                        <!-- Add To Cart -->
+                        <div class="actions">
+                            <div class="col-md-3 align-self-center" style="margin-right:15px">
+                                <select id="isPhysicalSelect" class="form-select" aria-label="Default select example">
+                                    <option selected value="0">Digital</option>
+                                    <option value="1">Physical</option>
+                                </select>
+                            </div>
+                            @*<div id="QuantityDiv" class="col-md-3 align-self-center" style="margin-right:15px; margin-left:15px;">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" min="1" max="100" step="1" value="1">
+                        </div> *@
+                            <div class=" align-self-center" style="padding-left:3px;">
+                                <a id="addToCartLink" asp-controller="Product" asp-action="AddProductToCart" asp-route-id="@Model.ActiveGame.GameId" asp-route-isPhysical="0" role="button" class="add-cart">
+                                    Add to Cart 🛒
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                <div>
+                    <!-- Add to Wishlist -->
+                    <div class="actions">
+                        <form asp-controller="Member" asp-action="AddWhislistItem" asp-route-id="@Model.ActiveGame.GameId" method="post">
+                            <button type="submit" class="add-favorite" style=" width: 310px;" title="Add to Favorites">
+                                Add to Wish List ❤️
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="gameSpecifications">
+                    <ul style="list-style: none; padding: 0;">
+                        <li>
+                            <span class="game-details-title">Category:</span>
+                            <span>
+                                @foreach (var g in Model.ActiveGame.GameDetailsCategories)
+                                {
+                                    var color = categoryColours.ContainsKey(g.Category.CategoryName) ? categoryColours[g.Category.CategoryName] : "#D3D3D3"; // Default color if not found
+                                    <span class="badge" style="background-color:@color; color: black;">
+                                        - @g.Category.CategoryName
+                                    </span>
+                                }
+                            </span>
+                        </li>
+                        <li>
+                            <span class="game-details-title">
+                                Platform:
+                            </span>
+                            <span>
+                                @foreach (var g in Model.ActiveGame.GameDetailsPlatforms)
+                                {
+                                    var color = platformColours.ContainsKey(g.Platform.PlatformName) ? platformColours[g.Platform.PlatformName] : "#D3D3D3"; // Default color if not found
+                                    <span class="badge" style="background-color:@color; color: black;">
+                                        - @g.Platform.PlatformName
+                                    </span>
+                                }
+                            </span>
+                        </li>
+                        <li>
+                            <span class="game-details-title">
+                                Language:
+                            </span>
+                            <span>
+                                @foreach (var g in Model.ActiveGame.GameDetailsLanguages)
+                                {
+                                    var color = languageColours.ContainsKey(g.Language.LanguageName) ? languageColours[g.Language.LanguageName] : "#D3D3D3"; // Default color if not found
+                                    <span class="badge" style="background-color:@color; color: black;">
+                                        - @g.Language.LanguageName
+                                    </span>
+                                }
+                            </span>
+                        </li>
+                    </ul>
+
+                </div>
+           
+            </div>
+        </div>
+
+        <div class="recommendedGames">
+            <div class="col-12">
+                <h4>Recommended Games</h4>
+            </div>
+            @if (Model.RelatedGames != null && Model.RelatedGames.Any())
+            {
+                <div>
+
+                    <div class="scroll-container">
+
+                        @foreach (var game in Model.RelatedGames)
+                        {
+                            <div class="game-card">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@game.GameId">
+                                    <img src="@Url.Content(game.GameImageLink)" alt="@game.GameName" />
+                                </a>
+                                <span class="tags" style="color: black; font-size: 1rem; font-weight: bold;">@game.GameName</span>
+                                <div class="tags">
+                                    @if (Model.SharedGameCategories.ContainsKey(game.GameId))
+                                    {
+                                        <span class="badge" style="color: black;">@Model.SharedGameCategories[game.GameId]</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+
+
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <p>No games have the same category as @Model.ActiveGame.GameName.</p>
+            }
+        </div>
+        <div class="recommendedGames mt-5">
+            <div class="col-12">
+                <h4>Suggested Games Based on Your Preferences</h4>
+            </div>
+            <div>
+                @if (Model.GamesFromPreferences != null && Model.GamesFromPreferences.Any())
+                {
+                    <div class="scroll-container">
+
+                        @foreach (var game in Model.GamesFromPreferences)
+                        {
+                            <div class="game-card">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@game.GameId">
+                                    <img src="@Url.Content(game.GameImageLink)" alt="@game.GameName" />
+                                </a>
+                                <span class="tags" style="color: black; font-size: 1rem; font-weight: bold;">@game.GameName</span>
+                                <div class="tags">
+                                    @if (ViewBag.PreferencesMap.ContainsKey(game.GameId))
+                                    {
+                                        var reasons = (List<string>)ViewBag.PreferencesMap[game.GameId];
+                                        <p style="color: black; font-size: 0.8rem; font-weight:bold;">
+                                            Matched Preference: <span style="font-weight:600;">@string.Join(", ", reasons)</span>
+                                        </p>
+                                    }
+
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                }
+                else
+                {
+                    <p class="mt-5 mb-5 fw-bold" style="margin-left: 30px">
+                        No recomended games based on your preferences.
+                        Please click <a asp-controller="Portal" asp-action="profile" asp-route-id="@ViewBag.CurrentUser" asp-route-activeTab="preferencesTab">here</a> to change your preferences
+                    </p>
+                }
+            </div>
+        </div>
+</div>
+
+    <script>
+        $(document).ready(function () {
+            // Check if the select dropdown and QuantityDiv exist before proceeding
+            const isPhysicalSelect = document.getElementById("isPhysicalSelect");
+            const quantityDiv = document.getElementById("QuantityDiv");
+
+            if (isPhysicalSelect) {
+                // Add event listener to handle changes
+                isPhysicalSelect.addEventListener("change", function () {
+                    updateCartLink();
+                    hideShowQuantity();
+                });
+
+                // Initial display based on the selected value
+                const selectedValue = isPhysicalSelect.value;
+                if (quantityDiv) {
+                    quantityDiv.hidden = selectedValue == 0;
+                }
+            }
+
+            // Function to update the cart link based on the selected value
+            function updateCartLink() {
+                const selectedValue = isPhysicalSelect.value;
+                const addToCartLink = document.getElementById('addToCartLink');
+
+                if (addToCartLink) {
+                    // Update the link's asp-route-isPhysical parameter with the selected value
+                    const currentHref = addToCartLink.getAttribute('href');
+                    const newHref = currentHref.replace(/(isPhysical=)\d+/, `$1${selectedValue}`);
+                    addToCartLink.setAttribute('href', newHref);
+                }
+            }
+
+            // Function to hide or show the quantity input
+            function hideShowQuantity() {
+                if (quantityDiv) {
+                    const selectedValue = isPhysicalSelect.value;
+                    quantityDiv.hidden = selectedValue == 0;
+                }
+            }
+        });
+    </script>
+    <script src="~/js/rating.js"></script> <!-- Link to your custom rating javascript -->
+
+</body>

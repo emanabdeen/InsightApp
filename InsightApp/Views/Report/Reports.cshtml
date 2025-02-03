@@ -1,0 +1,200 @@
+﻿@model ReportsViewModel
+
+<div class="d-inline-flex p-2 bd-highlight flex-column justify-content-start">
+    @* <h7 class="myHeader">Conestoga Virtual Game Store - Admin Panel</h7> *@
+
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Admin Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Reports</li>
+        </ol>
+    </nav>
+</div>
+<form id="reportForm" method="post" enctype="application/x-www-form-urlencoded">
+
+    <div class="pageBody">
+    <div class="d-flex row justify-content-between" style="border-bottom:solid; border-color:lightgray; padding-bottom:15px;">
+        <!------Reports list---->
+        <div class="flex-column col-8">
+            <div class="flex-column align-content-center">
+                <label for="reportTypeDropdown" class="filter-label">Select Report Type:</label>
+                <select id="reportTypeDropdown" class="filter-dropdown" onchange="changeReportType()">
+                    <option value="" disabled selected>Choose a report type</option>
+                    <option value="GameRating">Game Rating Report</option>
+                    <option value="MemberListReport">Member List Report</option>
+                    <option value="EventsRegistrationsReport">Events Registrations Report</option>
+                    <option value="MemberOrderDetail">Member Order Detail Report</option>
+                    <option value="WishList">Wish List Report</option>
+                    <option value="SalesReport">Sales Report</option>
+                </select>
+            </div>
+            <!--Category & Platform-->
+            <div id="filterGameOptions"  class="flex-column col-8">
+                <div  class="d-flex" >
+                    <div class="flex-column align-content-center">
+                        <label for="gameCategoryDropdown" class="filter-label">Category:</label>
+                        <select asp-for="Category" id="gameCategoryDropdown" class="filter-dropdown">
+                            <option value="All" selected>All</option>
+                            @foreach (GameCategory gameCategory in Model.GameCategories)
+                            {
+                                <option value="@gameCategory.CategoryName">@gameCategory.CategoryName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="flex-column align-content-center">
+                        <label for="gamePlatformDropdown" class="filter-label">Platform:</label>
+                            <select asp-for ="Platform" id="gamePlatformDropdown" class="filter-dropdown">
+                            <option value="All" selected>All</option>
+                            @foreach (GamePlatform gamePlatform in Model.GamePlatforms)
+                            {
+                                <option value="@gamePlatform.PlatformName">@gamePlatform.PlatformName</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div>
+                    <button class="downLoadReportButton" onclick="generateReport()">Generate Report </button>
+                </div>
+            </div>
+
+            <!--Event Type-->
+            <div id="filterEventOptions"  class="flex-column col-8">
+                <div  class="d-flex" >
+                    <div class="flex-column align-content-center">
+                        <label for="eventTypesDropdown" class="filter-label">Category:</label>
+                        <select asp-for="EventType" id="eventTypesDropdown" class="filter-dropdown">
+                            <option value="All" selected>All</option>
+                            @foreach (EventType eventType in Model.EventTypes)
+                            {
+                                <option value="@eventType.EvTypeName">@eventType.EvTypeName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <button class="downLoadReportButton" onclick="generateReport()">Generate Report </button>
+                </div>
+            </div>
+
+            <!----start Date and end date-->
+            <div id="filterDateOptions"  class="flex-column col-8">
+                <div  class="d-flex" >
+                    <div class="flex-column align-content-center">
+                        <label for="startDateDropdown" class="filter-label">From:</label>
+                        <input type="date" asp-for="StartDate" class="form-control"/>
+                    </div>
+
+                    <div class="flex-column align-content-center" style="margin-left:30px;">
+                        <label for="endDateDropdown" class="filter-label">To:</label>
+                        <input type="date" asp-for="EndDate" class="form-control" />
+                    </div>
+
+                </div>
+                <div>
+                    <button class="downLoadReportButton" onclick="generateReport()">Generate Report </button>
+                </div>
+            </div>
+
+            <div id="generateReportButton"  class="flex-column col-8">
+                <div>
+                    <button class="downLoadReportButton" onclick="generateReport()">Generate Report </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</form>
+
+<script>
+
+    // Initially hide the filterGameOptions section
+    window.onload = function () {
+        const reportType = document.getElementById("reportTypeDropdown").value;
+        const filterGameOptions = document.getElementById("filterGameOptions");
+        const filterEventOptions = document.getElementById("filterEventOptions");
+        const filterDateOptions = document.getElementById("filterDateOptions");
+        const generateReportButton = document.getElementById("generateReportButton");
+        //const wishListReport = document.getElementById("wishlistreport"); 
+
+        filterGameOptions.style.display = "none";
+        filterEventOptions.style.display = "none";
+        filterDateOptions.style.display = "none";
+        generateReportButton.style.display = "none";
+    };
+
+    function changeReportType() {
+        const reportType = document.getElementById("reportTypeDropdown").value;
+        const filterGameOptions = document.getElementById("filterGameOptions");
+        const filterEventOptions = document.getElementById("filterEventOptions");
+        const filterDateOptions = document.getElementById("filterDateOptions");
+        const generateReportButton = document.getElementById("generateReportButton");
+        //const wishListReport = document.getElementById("wishlistreport");
+
+        // Hide all report sections initially
+        filterGameOptions.style.display = "none";
+        filterEventOptions.style.display = "none";
+        filterDateOptions.style.display = "none";
+        generateReportButton.style.display = "none";
+
+        // Show the game options for specific report types
+        if (reportType === "GameRating" || reportType === "WishList") {
+            filterGameOptions.style.display = "flex"; 
+        }
+        // Show the Event options for specific report types
+        else if (reportType === "EventsRegistrationsReport") {
+            filterEventOptions.style.display = "flex"; 
+        }
+        // Show Dates filter with specific report types
+        else if (reportType === "SalesReport") {
+            filterDateOptions.style.display = "flex";
+        }
+        // Show generate button without filter with specific report types
+        else if (reportType === "MemberOrderDetail" || reportType==="MemberListReport") {
+            generateReportButton.style.display = "flex";
+        }
+
+    }
+
+    function generateReport() {
+        // Get the selected values from the dropdowns
+        var reportType = document.getElementById('reportTypeDropdown').value;
+        var category = document.getElementById('gameCategoryDropdown').value;
+        var platform = document.getElementById('gamePlatformDropdown').value;
+
+        // Build the action URL based on selected values
+        var actionUrl ="";
+
+        if(reportType=== "WishList"){
+            actionUrl ="reports/WishListReports";
+        }
+        else if(reportType=== "GameRating"){
+            actionUrl ="reports/GameRatingReport";
+        }
+        else if(reportType=== "EventsRegistrationsReport"){
+            actionUrl ="reports/EventsRegistrationsReport";
+        }
+        else if(reportType=== "MemberOrderDetail"){
+            actionUrl ="reports/MemberOrderDetailsReport";
+        }
+        else if (reportType === "SalesReport") {
+            actionUrl = "reports/SalesReport";
+        }
+        else if (reportType === "MemberListReport") {
+            actionUrl = "reports/MemberListReport";
+        }
+
+
+
+        // Set the action attribute of the form
+        var form = document.getElementById('reportForm');
+        form.action = actionUrl;
+
+        // Submit the form
+        form.submit();
+    }
+</script>

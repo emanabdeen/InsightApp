@@ -1,0 +1,91 @@
+﻿@using InsightApp.Entities
+@model MemberProfileViewModel
+@inject InsightUpdateCvgs2Context dbContext
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<div class="card-body">
+    <form asp-controller="Member" asp-action="EditMemberProfileId" method="post" enctype="application/x-www-form-urlencoded">
+
+        <!-- Form Group (username)-->
+        <div class="mb-3">
+            <label class="small mb-1" for="inputUsername">Display Name</label>
+            <input class="form-control" id="inputUsername" style="background-color:lightgrey;" type="text" asp-for="ActiveMember.DisplayName" readonly>
+            <span asp-validation-for="ActiveMember.DisplayName" class="text-danger"></span>
+        </div>
+
+        <!-- Form Group (Email)-->
+        <div class="mb-3">
+            <label class="small mb-1" for="inputUsername">Email</label>
+            <input class="form-control" id="inputEmail" style="background-color:lightgrey;" type="text" value="@ViewBag.Email" readonly>
+        </div>
+
+        <!-- Form Row-->
+        <div class="row gx-3 mb-3">
+            <!-- Form Group (first name)-->
+            <div class="col-md-6">
+                <label class="small mb-1" for="inputFirstName">First name</label>
+                <input class="form-control" id="inputFirstName" type="text" asp-for="ActiveMember.FirstName">
+                <span asp-validation-for="ActiveMember.FirstName" class="text-danger"></span>
+            </div>
+            <!-- Form Group (last name)-->
+            <div class="col-md-6">
+                <label class="small mb-1" for="inputLastName">Last name</label>
+                <input class="form-control" id="inputLastName" type="text" asp-for="ActiveMember.LastName">
+                <span asp-validation-for="ActiveMember.LastName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Form Row-->
+        <div class="row gx-3 mb-3">
+            <!-- Form Group (phone number)-->
+            <div class="col-md-6">
+                <label class="small mb-1" for="inputPhone">Phone number</label>
+                <input class="form-control" id="inputPhone" type="tel" asp-for="ActiveMember.PhoneNumber">
+                <span asp-validation-for="ActiveMember.PhoneNumber" class="text-danger"></span>
+            </div>
+            <!-- Form Group (birthday)-->
+            <div class="col-md-6">
+                <label class="small mb-1" for="inputBirthday">Date of birth</label>
+                <input type="date" class="form-control" id="inputBirthday" asp-for="ActiveMember.Dob">
+                <span asp-validation-for="ActiveMember.Dob" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Form Row-->
+        <div class="row gx-3 mb-3">
+            <!-- Form Group (Gender)-->
+            <div class="col-md-6">
+                <label class="small mb-1" for="inputPhone">Gender</label>
+                <select class="form-control" asp-for="ActiveMember.Gender">
+                    <option value="">Select...</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="NA">Prefer not to answer</option>
+                </select>
+                <span asp-validation-for="ActiveMember.Gender" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <!-- Checkbox Row-->
+        <div class="row gx-3 mb-3" style="margin-top:30px; font-weight:bold;">
+            <!-- Form Group (RecievesEmails)-->
+            <div class="col-md-6">
+                <input type="checkbox" id="RecievesEmails" asp-for="ActiveMember.RecievesEmails">
+                <label> Recieves Emails</label><br>
+            </div>
+        </div>
+        <input type="hidden" asp-for="ActiveMember.MemberId" /> @*to return the id with the object*@
+        <input type="hidden" asp-for="ActiveMember.AccountId" value="@Model.ActiveMember.AccountId.ToString()" /> @*to return the id with the object*@
+
+        <!-- Save changes button-->
+        <div class=" flex-row d-flex ">
+            <button type="submit" class=" viewComponent btn btn-custom btn-lg">Save</button>
+        </div>
+
+    </form>
+</div>

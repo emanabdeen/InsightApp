@@ -1,0 +1,119 @@
+﻿/* Default hidden class */
+.hidden {
+    display: none;
+}
+
+/* Basic styling for rating stars */
+.rating-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.stars-container {
+    display: flex;
+    justify-content: center;
+    gap: 0px;
+    margin:30px;
+}
+
+.star,
+.rating-star {
+    font-size: 1.5em;
+    cursor: pointer;
+    color: rgb(224, 224, 224);
+    padding: 5px;
+}
+
+.rating-star.filled {
+        color: gold;
+
+}
+
+/* Modal styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+}
+
+.modal-content {
+    background-color: #111f30;
+    margin: 15% auto;
+    padding: 20px;
+    width: 600px;
+    border-radius: 8px;
+    text-align: center;
+}
+.modal-header{
+    text-align: center;
+    justify-content: center;
+    color:gold;
+    border-bottom-color: gold;
+    font-size: 1rem;
+}
+.modal-title{
+    color:gold;
+    margin: 20px;
+    font-size: 2rem;
+}
+
+.rate-button{
+    width:80%;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2em;
+    cursor: pointer;
+    color: white;
+}
+/* Default single star - outlined gold */
+#single-star i {
+    color: gold;
+    font-size: 1em;
+}
+
+/* Hover effect - filled gold */
+#single-star:hover i {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900; /* Font weight for solid star */
+    content: "\f005"; /* Unicode for solid star */
+}
+.ratingProductDetails {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between rating and Rate link */
+}
+
+.rate-link {
+    color: blue;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 5px; /* Adjust as needed */
+    font-size: 1em;
+    text-decoration: underline;
+}
+
+.rate-link:hover {
+        color: dodgerblue;
+}
+
+.gameSpecifications{
+    margin-top: 80px;
+}
+
+.game-details-title {
+    font-weight:500;
+    margin-right: 5px;
+    color: #333;
+}

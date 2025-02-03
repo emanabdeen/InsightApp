@@ -1,0 +1,49 @@
+﻿@model RateReviewGamesViewModel
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="OwnedGames">My Games</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Game.GameName</li>
+        </ol>
+    </nav>
+</div>
+
+
+<div class="MyProductt-container">
+
+    <!-- Product Information -->
+    <div class="MyProduct-info">
+        <img src="@Url.Content(@Model.Game.GameImageLink)" alt="Product Image">
+        <h2>@Model.Game.GameName</h2>
+    </div>
+
+    
+    <!-- Review Form -->
+    <form asp-action="SubmitReview" asp-controller="Member" asp-route-id="@Model.Game.GameId" method="post" class="review-form">
+        <span asp-validation-for="GameReview.ReviewBody" class="text-danger"></span>
+        <input type="hidden" name="GameReview.GameId" value="@Model.GameReview.GameId" />
+        <input type="hidden" name="GameReview.MemberId" value="@Model.GameReview.MemberId" />
+        <input type="hidden" name="GameReview.StatusId" value="@Model.GameReview.StatusId" />
+        <textarea name="GameReview.ReviewBody" placeholder="Write your review here..."></textarea>
+         <br />
+        <button type="submit" class="reviewSubmit-btn">Submit Review</button>
+    </form>
+</div>
+
+<script>
+    // Optional: You can add JS to handle form submission, validation, etc.
+    // document.querySelector('.review-form').addEventListener('submit', function(e) {
+    //     e.preventDefault();
+    //     const rating = document.querySelector('input[name="star"]:checked');
+    //     const reviewText = document.querySelector('textarea').value;
+
+    //     if (rating && reviewText.trim()) {
+    //         alert(`Thank you for your review!\nRating: ${rating.value} stars\nReview: ${reviewText}`);
+    //     } else {
+    //         alert("Please select a star rating and write a review.");
+    //     }
+    // });
+</script>

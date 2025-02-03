@@ -1,0 +1,67 @@
+@using Microsoft.AspNetCore.Identity
+@using InsightApp.Entities
+
+@inject SignInManager<Account> SignInManager
+@inject UserManager<Account> UserManager
+@inject InsightUpdateCvgs2Context DbContext
+
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+
+    string? accountId = User.Identity.IsAuthenticated ? @UserManager.GetUserId(User) : "";
+    Account account = await @UserManager.GetUserAsync(User);
+    Member? currentMember;
+    Employee? currentEmployee;
+    int memberId = 0;
+
+    bool accountIsAdmin = await UserManager.IsInRoleAsync(account, "Admin");
+    if (accountIsAdmin)
+    {
+            currentEmployee = DbContext.Employees.FirstOrDefault(e => e.AccountId == new Guid(accountId));
+            <li id="userProfile" class="nav-item">
+                <a><span class="icon">@UserManager.GetUserName(User)</span></a>
+            </li>
+    }
+    else
+    {
+        currentMember = DbContext.Members.FirstOrDefault(m => m.AccountId == new Guid(accountId));
+        memberId = currentMember.MemberId;
+            <li id="userProfile" class="nav-item">
+                <a><span class="icon">@UserManager.GetUserName(User)</span></a>
+                <ul>
+                    <li><a id="manage" asp-controller="Member" asp-action="MemberProfile" asp-route-id="@memberId" title="Manage">My Profile</a></li>
+                    <li><a asp-controller="Member" asp-action="OwnedGames">My Games</a></li>
+                    <li><a asp-controller="Member" asp-action="GetMyEvents">My Events</a></li>
+                </ul>
+            </li>
+    }
+        
+    <li class="nav-item" >
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+        <li Id="registerLink" class="nav-item" >
+        <a class="nav-link text-dark" style="font-weight:bold; font-size:18px;" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" style="font-weight:bold; font-size:18px;" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>
+
+<!--hide the favIcon & shoppingIcon in in AdminPanel-->
+<script type="text/javascript">
+    // JavaScript to check if "AdminPanel" exists in the URL
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.location.href.includes("AdminPanel") || window.location.href.includes("Home")) {
+        const userProfile = document.getElementById('userProfile');
+        //userProfile.hidden = true;
+        }
+    })
+</script>

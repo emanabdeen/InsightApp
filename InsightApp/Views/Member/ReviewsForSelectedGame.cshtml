@@ -1,0 +1,87 @@
+﻿@model List<ReviewViewModel>
+@{
+    var activeGame = Model.FirstOrDefault();
+
+}
+
+<link rel="stylesheet" href="~/css/ReviewList.css" />
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="products">Games</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="details" asp-route-id="@ViewBag.GameId">@ViewBag.GameName</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Reviews</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Reviews</h2>
+    <hr />
+
+    @if (!Model.Any())
+    {
+        <div class="text-center">
+            <img src="~/Imgs/empty.jpg" alt="No Reviews" style="width: 200px;" />
+            <h5 class="mt-3">There are currently no reviews.</h5>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var review in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@Url.Content(review.GameImageLink)" class="card-img-top" alt="@review.GameName" style="height: 200px; object-fit: cover;" />
+                        <div class="card-body">
+                            <h5 class="card-title">@review.GameName</h5>
+                            <p class="text-muted"><strong>Reviewed By:</strong> @review.ReviewedBy</p>
+                            <!-- Display rating if available -->
+                            @if (review.UserRating.HasValue)
+                            {
+                                <div class="mt-2">
+                                     @await Html.PartialAsync("_UserRatingPartial", review.UserRating)
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mt-2 mb-2">
+                                    User gave no rating.
+                                </div>
+                            }
+                            <p class="card-text text-truncate" id="review-text-@review.ReviewId" style="max-height: 75px; overflow: hidden;">
+                                @review.ReviewBody
+                            </p>
+                            <button class="btn btn-link p-0 text-decoration-none"
+                                    onclick="toggleReviewText(@review.ReviewId)">
+                                Read More
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<script>
+    function toggleReviewText(reviewId) {
+        const reviewText = document.getElementById(`review-text-${reviewId}`);
+        const button = event.target;
+
+        if (reviewText.classList.contains("text-truncate")) {
+            reviewText.classList.remove("text-truncate");
+            reviewText.style.maxHeight = "none";
+            button.textContent = "Read Less";
+        } else {
+            reviewText.classList.add("text-truncate");
+            reviewText.style.maxHeight = "75px";
+            button.textContent = "Read More";
+        }
+    }
+</script>

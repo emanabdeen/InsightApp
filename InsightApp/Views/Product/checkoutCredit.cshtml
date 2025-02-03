@@ -1,0 +1,171 @@
+﻿
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<div class="breadcrumbsPortal">
+    <!------Breadcrumb------>
+    <nav style="--bs-breadcrumb-divider: '>'; margin-top:10px; font-size:18px; font-weight: bold;" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Member" asp-action="MemberPortal">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="products">Game</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="Cart">Cart</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Check out</li>
+        </ol>
+    </nav>
+</div>
+<h1>Checkout</h1>
+<!-- Payment Information -->
+<form id="creditForm" asp-controller="Product" asp-action="CheckoutPost" method="post" enctype="application/x-www-form-urlencoded">
+    <div class="checkout-container">
+        <div class="col-12 ">
+            <div class=" side">
+                <h6>Payment Information</h6>
+
+                <div class="d-flex align-items-center" style="margin-bottom:15px;">
+                    <div class="mb-3 col-6" style="margin-right:10px;">
+                        <label class="small mb-1 required-label" for="cardHolderName">Card Holder Name</label>
+                        <input class="form-control" id="cardHolderName" type="text" required>
+                    </div>
+                    <div class="mb-3 col-4">
+                        <span id="cardHolderNameCodeError"></span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center" style="margin-bottom:15px;">
+                    <div class="mb-3 col-6" style="margin-right:10px;">
+                        <div class="row align-items-center" style="margin-bottom:5px;">
+                            <label for="card-number" class="required-label col-auto">Card Number:</label>
+                            <a href="https://www.freepik.com/icons/visa" class="col-auto" style="padding:0px;">
+                                <img src="~/Imgs/visaCard2.png" alt="Visa Card" />
+                            </a>
+                        </div>
+                         <input type="text" id="card-number" required>
+                    </div>
+                    <div class="mb-3 col-4">
+                        <span id="card-numberCodeError"></span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center" style="margin-bottom:15px;">
+                    <div class="mb-3 col-6" style="margin-right:10px;">
+                        <label for="expiry-date" class="required-label">Expiry Date:</label>
+                        <input type="text" id="expiry-date" placeholder="MM/YY" required>
+                    </div>
+                    <div class="mb-3 col-4">
+                        <span id="expiry-dateCodeError"></span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center" style="margin-bottom:15px;">
+                    <div class="mb-3 col-6" style="margin-right:10px;">
+                        <label for="cvv" class="required-label">CVV:</label>
+                        <input type="text" id="cvv" required>
+                    </div>
+                    <div class="mb-3 col-4">
+                        <span id="cvvCodeError"></span>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    
+    </div>
+
+    <!-- Order Summary -->
+    <div class="summaryCheckout">
+        <div class="col-6">
+		    <h2>Order Summary</h2>
+		    <div class="summary-total">
+			    <h3>Total: <span>$@ViewBag.TotalPrice</span></h3>
+		    </div>
+	    </div>
+	    <button class="checkout-btn2" type="submit">Complete Purchase</button>
+    </div>
+</form>
+
+
+<script>
+    $(document).ready(function () {
+        // Define regex patterns
+        var cardHolderNamePattern = /^[A-Za-z\s]+$/;
+        var cardNumberPattern = /^4[0-9]{12}(?:[0-9]{3})?$/;
+        var expiryDatePattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        var cvvPattern = /^\d{3}$/;
+
+        // Function to validate card holder name
+        function validateCardHolderName() {
+            var cardHolderName = $("#cardHolderName").val();
+            if (cardHolderNamePattern.test(cardHolderName)) {
+                $("#cardHolderNameCodeError").text("Valid").removeClass("errorValidation").addClass("validated"); // Clear error
+            } else {
+                $("#cardHolderNameCodeError").text("Card holder name can only contain letters and spaces.").removeClass("validated").addClass("errorValidation");
+                            
+            }
+        }
+
+        // Function to validate card number
+        function validateCardNumber() {
+            var cardNumber = $("#card-number").val();
+            if (cardNumberPattern.test(cardNumber)) {
+                $("#card-numberCodeError").text("Valid").removeClass("errorValidation").addClass("validated"); // Clear error
+            } else {
+                    $("#card-numberCodeError").text("Visa Card [have 13 or 16 digits start with number 4].").removeClass("validated").addClass("errorValidation");
+            }
+        }
+
+        // Function to validate expiry date
+        function validateExpiryDate() {
+            var expiryDate = $("#expiry-date").val();
+            if (expiryDatePattern.test(expiryDate)) {
+                // Split the expiry date into MM and YY parts
+                var parts = expiryDate.split('/');
+                var month = parseInt(parts[0], 10);
+                var year = parseInt("20" + parts[1], 10);
+                var currentDate = new Date();
+                var currentYear = currentDate.getFullYear();
+                var currentMonth = currentDate.getMonth() + 1; // Months are 0-based
+
+                if (year > currentYear || (year === currentYear && month > currentMonth)) {
+                    $("#expiry-dateCodeError").text("Valid").removeClass("errorValidation").addClass("validated"); // Clear error
+                } else {
+                    $("#expiry-dateCodeError").text("Expiry date must be at least one month in the future.").removeClass("validated").addClass("errorValidation");
+                }
+            } else {
+                $("#expiry-dateCodeError").text("Expiry date must be in MM/YY format.").removeClass("validated").addClass("errorValidation");
+            }
+        }
+
+        // Function to validate CVV
+        function validateCVV() {
+            var cvv = $("#cvv").val();
+            if (cvvPattern.test(cvv)) {
+                $("#cvvCodeError").text("Valid").removeClass("errorValidation").addClass("validated"); // Clear error
+            } else {
+                $("#cvvCodeError").text("CVV must be a 3-digit number.").removeClass("validated").addClass("errorValidation");
+            }
+        }
+
+        // Validate on input change
+        $("#cardHolderName").on("change", validateCardHolderName);
+        $("#card-number").on("change", validateCardNumber);
+        $("#expiry-date").on("change", validateExpiryDate);
+        $("#cvv").on("change", validateCVV);
+
+    // Validate on form submit
+    $("#creditForm").on("submit", function (event) {
+        // Call validation functions before submitting
+        validateCardHolderName();
+        validateCardNumber();
+        validateExpiryDate();
+        validateCVV();
+
+        // Prevent form submission if any errors exist
+            if ($(".errorValidation:visible").length > 0) {
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+});
+
+</script>
+
+
+
