@@ -69,6 +69,16 @@ Before you run the project, you will need to set up the database.
 6. **Access Member Portal**:
    - To access the Member Portal you need to create a new account and then sign in to the portal after confirming your email.
 
+## 🔐 Configuration Notes
+
+This project uses local secrets stored in `appsettings.Development.json`, which is ignored by Git. You'll need to create this file with your own:
+
+- Database connection string
+- Google ReCAPTCHA keys
+- Email service app password
+
+Never commit real credentials to version control.
+
 ## Additional Information
 
 - The application includes sample data and is ready to be used immediately after setting up the database.
