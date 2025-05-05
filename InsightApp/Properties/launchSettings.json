@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -33,6 +33,10 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "Development"
     }
+
   }
 }
